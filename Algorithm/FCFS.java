@@ -16,6 +16,7 @@ public class FCFS{
     private int[] arrivals;
     private int[] processIDs;
     private int[] endTimes;
+    private int[] waitingTimes;
 
     public FCFS(int[] process_times, int[] arrival_times){
         bursts = process_times;
@@ -36,20 +37,26 @@ public class FCFS{
             .toArray();
         // print the process, evaluate turnaround
         // by equation : turnaround = burst - arrival + waiting
-        int waiting = 0;
+        int time = 0;
         ArrayList<Integer> turnarounds = new ArrayList<Integer>(); 
+        ArrayList<Integer> waitings = new ArrayList<Integer>();
 
         for(int i = 0; i < sorted_bursts.length; i++){
-            if(waiting < sorted_arrivals[i]){
+            if(time >= sorted_arrivals[i]){
+                waitings.add(time-sorted_arrivals[i]);
+            }else{
+                waitings.add(sorted_arrivals[i]-time);
+            }
+            if(time < sorted_arrivals[i]){
                 turnarounds.add(sorted_bursts[i]+sorted_arrivals[i]);
-                waiting = sorted_bursts[i]+sorted_arrivals[i];
+                time = sorted_bursts[i]+sorted_arrivals[i];
             }
             else{
-                turnarounds.add(sorted_bursts[i]+waiting);
-                waiting += sorted_bursts[i];
+                turnarounds.add(sorted_bursts[i]+time);
+                time += sorted_bursts[i];
             }
         }
-
+        waitingTimes = waitings.stream().mapToInt(Integer::intValue).toArray();
         processIDs = sorted_pids;
         arrivals = sorted_arrivals;
         endTimes = turnarounds.stream().mapToInt(Integer::intValue).toArray();
@@ -67,12 +74,18 @@ public class FCFS{
         return processIDs;
     }
 
+    public int[] getWaitingTimes() {
+        return waitingTimes;
+    }
+
     // Character User Interface for testing in console
     public String toString(){
         final int[] turns = this.getEndTimes();
         final int[] pids = this.getProcessIDs();
+        final int[] starts = this.getArrivals();
+        final int[] waits = this.getWaitingTimes();
         final String result = IntStream.range(0, turns.length).boxed()
-            .map(i -> "Process " + (pids[i]+1) + ": " + turns[i] +"\n")
+            .map(i -> "Process " + (pids[i]+1) + ": start->" + starts[i] + " ends->" + turns[i] + " waits->" + waits[i] +"\n")
             .reduce("",String::concat);
         return result;
     }
