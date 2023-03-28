@@ -46,6 +46,7 @@ public class FCFS{
         return turnarounds.stream().mapToInt(Integer::intValue).toArray();
     }
 
+    // Character User Interface for testing in console
     public String toString(){
         final int[] turns = this.getTurnarounds();
         final String result = IntStream.range(0, turns.length).boxed()
