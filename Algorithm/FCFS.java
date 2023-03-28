@@ -14,25 +14,31 @@ public class FCFS{
     // but the processes must be sorted by arrival times
     private int[] bursts;
     private int[] arrivals;
+    private int[] processIDs;
+    private int[] endTimes;
 
     public FCFS(int[] process_times, int[] arrival_times){
         bursts = process_times;
         arrivals = arrival_times;
-    }
 
-    public int[] getTurnarounds(){
         // sort burst array by arrival time
         final int[] sorted_bursts = IntStream.range(0, arrivals.length).boxed()
             .sorted(Comparator.comparingInt(i -> arrivals[i]))
             .mapToInt(i -> bursts[i])
             .toArray();
-        final int[] sorted_arrivals = arrivals.clone();
 
+        final int[] sorted_arrivals = arrivals.clone();
         Arrays.sort(sorted_arrivals);
+
+        final int[] sorted_pids = IntStream.range(0, arrivals.length).boxed()
+            .sorted(Comparator.comparingInt(i -> arrivals[i]))
+            .mapToInt(Integer::intValue)
+            .toArray();
         // print the process, evaluate turnaround
         // by equation : turnaround = burst - arrival + waiting
         int waiting = 0;
         ArrayList<Integer> turnarounds = new ArrayList<Integer>(); 
+
         for(int i = 0; i < sorted_bursts.length; i++){
             if(waiting < sorted_arrivals[i]){
                 turnarounds.add(sorted_bursts[i]+sorted_arrivals[i]);
@@ -43,14 +49,30 @@ public class FCFS{
                 waiting += sorted_bursts[i];
             }
         }
-        return turnarounds.stream().mapToInt(Integer::intValue).toArray();
+
+        processIDs = sorted_pids;
+        arrivals = sorted_arrivals;
+        endTimes = turnarounds.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    public int[] getEndTimes(){
+        return endTimes;
+    }
+
+    public int[] getArrivals() {
+        return arrivals;
+    }
+
+    public int[] getProcessIDs() {
+        return processIDs;
     }
 
     // Character User Interface for testing in console
     public String toString(){
-        final int[] turns = this.getTurnarounds();
+        final int[] turns = this.getEndTimes();
+        final int[] pids = this.getProcessIDs();
         final String result = IntStream.range(0, turns.length).boxed()
-            .map(i -> "Process " + (i+1) + ": " + turns[i] +"\n")
+            .map(i -> "Process " + (pids[i]+1) + ": " + turns[i] +"\n")
             .reduce("",String::concat);
         return result;
     }
@@ -63,6 +85,7 @@ public class FCFS{
 
         System.out.println(test_fcfs.toString());
         
+        // Example use for IntStream
         //int[] strings = {"string1", "string2", "string3"};
         //int[] boosts = {40, 32, 34};
 
