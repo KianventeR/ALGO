@@ -7,67 +7,87 @@ import java.util.Arrays;
 public class RR {
     private int[] bursts;
     private int[] arrivals;
+    private int[] processIDs;
+    private int[] endTimes;
     private int quantum;
 
     public RR(int[] process_times, int[] arrival_times, int time_slice){
+        // save the parameters for retrieval 
         bursts = process_times;
         arrivals = arrival_times;
         quantum = time_slice;
-    }
 
-    public Object[] getTurnarounds(){
         // sort burst array by arrival time
         final int[] sorted_bursts = IntStream.range(0, arrivals.length).boxed()
             .sorted(Comparator.comparingInt(i -> arrivals[i]))
             .mapToInt(i -> bursts[i])
             .toArray();
+        
         final int[] sorted_arrivals = arrivals.clone();
-
         Arrays.sort(sorted_arrivals);
-        // print the process, evaluate turnaround
-        // take note of the remaining bursts
-        int[] remaining_bursts = bursts.clone();
 
         ArrayList<Integer> turnarounds = new ArrayList<Integer>();
         ArrayList<Integer> processes = new ArrayList<Integer>();
 
-        int burstsleft = Arrays.stream(remaining_bursts).sum();
-        int index = 0; int time = 0;
+        int burstsleft = Arrays.stream(sorted_bursts).sum();
+        int time = 0;
+
         while(burstsleft > 0){
-            // if process arrived already and has still burst left, only then execute 
-            if(sorted_arrivals[index] <= time && remaining_bursts[index] > 0){
-                processes.add(index);
-                if(remaining_bursts[index] > quantum){
-                    time += quantum;
-                    remaining_bursts[index] -= quantum;
-                }else{
-                    time += remaining_bursts[index];
-                    remaining_bursts[index] = 0;
+            // check for those who arrived
+            int arrived = 0;
+            for(int index = 0; index < sorted_bursts.length; index++){
+                //System.out.println("Processing... "+time+" | "+sorted_arrivals[index]+" "+sorted_bursts[index]); //for debugging
+                // if process arrived already and has still burst left, only then execute process
+                if(sorted_arrivals[index] <= time && sorted_bursts[index] > 0){
+
+                    processes.add(index);
+
+                    if(sorted_bursts[index] > quantum){
+                        time += quantum;
+                        sorted_bursts[index] -= quantum;
+                    }else{
+                        time += sorted_bursts[index];
+                        sorted_bursts[index] = 0;
+                    }
+
+                    turnarounds.add(time);
+                    arrived += 1;
                 }
-                turnarounds.add(time);
             }
-            else{
+            
+            if(arrived == 0){
                 // let time pass 
-                time++;
+                time++; 
             }
-            // alternate through all processes
-            index = (index + 1) % sorted_bursts.length;
+
             // check if there are any processes to run
-            burstsleft = Arrays.stream(remaining_bursts).sum();
-            System.out.println("Processing... "+burstsleft);
+            burstsleft = Arrays.stream(sorted_bursts).sum();
         }
 
-        return new Object[]{processes.toArray(), turnarounds.toArray()};
+        // save the end_times, arrivals, and process ids
+        endTimes = turnarounds.stream().mapToInt(Integer::intValue).toArray();
+        arrivals = sorted_arrivals;
+        processIDs = processes.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    public int[] getEndTimes() {
+        return endTimes;
+    }
+
+    public int[] getArrivals() {
+        return arrivals;
+    }
+
+    public int[] getProcessIDs() {
+        return processIDs;
     }
 
     public String toString(){
-        final int PROCESS = 0;
-        final int TURNAROUND = 1;
-        Object[] turns = this.getTurnarounds();
-        int[] processes = (int[]) turns[PROCESS];
-        int[] turnarounds = (int[]) turns[TURNAROUND];
+
+        int[] turns = this.getEndTimes();
+        int[] pids = this.getProcessIDs();
         final String result = IntStream.range(0, turns.length).boxed()
-        .map(i -> "Process " + processes[i] + ": " + turnarounds[i] +"\n")
+        .map(i -> "Process " + pids[i] + ": " + turns[i] +"\n")
         .reduce("",String::concat);
         return result;
     }
@@ -75,7 +95,7 @@ public class RR {
     public static void main(String[] args){
 
         int[] bursts = {10,20,30,40,50};
-        int[] arrivals = {1,12,13,14,15};
+        int[] arrivals = {1,2,3,4,5};
         int time_slice = 10;
         RR test_rr = new RR(bursts, arrivals, time_slice);
 
