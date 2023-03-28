@@ -50,7 +50,7 @@ public class FCFS{
     public String toString(){
         final int[] turns = this.getTurnarounds();
         final String result = IntStream.range(0, turns.length).boxed()
-            .map(i -> "Process " + i + ": " + turns[i] +"\n")
+            .map(i -> "Process " + (i+1) + ": " + turns[i] +"\n")
             .reduce("",String::concat);
         return result;
     }
