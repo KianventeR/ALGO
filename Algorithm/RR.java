@@ -22,7 +22,10 @@ public class RR {
             .sorted(Comparator.comparingInt(i -> arrivals[i]))
             .mapToInt(i -> bursts[i])
             .toArray();
-        
+
+        // copy the sorted bursts into the original burst    
+        bursts = sorted_bursts.clone();
+
         final int[] sorted_arrivals = arrivals.clone();
         Arrays.sort(sorted_arrivals);
 
