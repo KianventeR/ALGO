@@ -62,6 +62,7 @@ public class FCFS{
         endTimes = turnarounds.stream().mapToInt(Integer::intValue).toArray();
     }
 
+    // same for average turnaround time
     public int[] getEndTimes(){
         return endTimes;
     }
@@ -73,7 +74,7 @@ public class FCFS{
     public int[] getProcessIDs() {
         return processIDs;
     }
-
+    // same for average waiting time
     public int[] getWaitingTimes() {
         return waitingTimes;
     }
