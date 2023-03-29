@@ -1,49 +1,96 @@
 package Algorithm;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.Comparator;
 import java.util.Arrays;
 
 public class SJF {
-    
-    public static void main(String[] args) {
-        int[] arrivalTime = {0, 2, 4, 5, 7};
-        int[] burstTime = {5, 3, 1, 2, 6};
-        int n = arrivalTime.length;
+    private int[] bursts;
+    private int[] arrivals;
+    private int[] processIDs;
+    private int[] endTimes;
+    private int[] turnarounds;
+    private int[] waitingTimes;
+    private double avgWaitingTime;
+    private double avgTurnaroundTime;
+
+    public SJF(int[] burst_times, int[] arrival_times){
+        int n = arrival_times.length;
 
         // create a list of processes
         List<Process> processes = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            processes.add(new Process(i+1, arrivalTime[i], burstTime[i]));
+            processes.add(new Process(i+1, arrival_times[i], burst_times[i]));
         }
-
-        // sort the list by burst time
-        processes.sort(Comparator.comparing(Process::getBurstTime));
+        // sort by arrival time first
+        processes.sort(Comparator.comparing(Process::getArrivalTime).
+            thenComparing(Comparator.comparing(Process::getBurstTime)));
 
         // run the processes and calculate waiting time and turnaround time
         int[] waitingTime = new int[n];
         int[] turnaroundTime = new int[n];
+        int[] arriveTime = new int[n];
+        int[] pids = new int[n];
+        int[] burstTimes = new int[n];
         int currentTime = 0;
         for (int i = 0; i < n; i++) {
             Process p = processes.get(i);
+            pids[i] = p.getId();
+            arriveTime[i] = p.getArrivalTime();
+            burstTimes[i] = p.getBurstTime();
             waitingTime[p.getId()-1] = currentTime - p.getArrivalTime();
             turnaroundTime[p.getId()-1] = waitingTime[p.getId()-1] + p.getBurstTime();
             currentTime += p.getBurstTime();
         }
 
-        // print the results
-        System.out.println("Process\tArrival Time\tBurst Time\tWaiting Time\tTurnaround Time");
-        for (int i = 0; i < n; i++) {
-            Process p = processes.get(i);
-            System.out.printf("%d\t%d\t\t%d\t\t%d\t\t%d\n", p.getId(), p.getArrivalTime(), p.getBurstTime(),
-                    waitingTime[p.getId()-1], turnaroundTime[p.getId()-1]);
-        }
+        waitingTimes = waitingTime;
+        arrivals = arriveTime; 
+        processIDs = pids;
+        bursts = burstTimes;
+        turnarounds = turnaroundTime;
+        endTimes = IntStream.range(0,bursts.length).boxed()
+                .mapToInt(i-> turnarounds[i] + arrivals[i])
+                .toArray();
 
         // calculate and print the average waiting time and turnaround time
-        double avgWaitingTime = Arrays.stream(waitingTime).average().getAsDouble();
-        double avgTurnaroundTime = Arrays.stream(turnaroundTime).average().getAsDouble();
-        System.out.printf("Average Waiting Time: %.2f\n", avgWaitingTime);
-        System.out.printf("Average Turnaround Time: %.2f\n", avgTurnaroundTime);
+        avgWaitingTime = Arrays.stream(waitingTime).average().getAsDouble();
+        avgTurnaroundTime = Arrays.stream(turnaroundTime).average().getAsDouble();
+        
+    }
+
+    public int[] getArrivals() {
+        return arrivals;
+    }
+
+    public int[] getBursts() {
+        return bursts;
+    }
+
+    public int[] getEndTimes() {
+        return endTimes;
+    }
+
+    public int[] getWaitingTimes() {
+        return waitingTimes;
+    }
+
+    public String toString(){
+        final String header = "Process\tArrival Time\tBurst Time\tWaiting Time\tTurnaround Time\n";
+        final String footer1 = String.format("Average Waiting Time: %.2f\n", avgWaitingTime);
+        final String footer2 = String.format("Average Turnaround Time: %.2f\n", avgTurnaroundTime);
+        final String result = header + IntStream.range(0,processIDs.length).boxed()
+            .map( i -> String.format("%d\t%d\t\t%d\t\t%d\t\t%d\n",processIDs[i],arrivals[i],bursts[i],waitingTimes[i],turnarounds[i]))
+            .reduce(String::concat) + footer1 + footer2;
+        return result;
+    }
+    
+    public static void main(String[] args) {
+        int[] arrivalTime = {0, 2, 4, 5, 7};
+        int[] burstTime = {5, 3, 1, 2, 6};
+        SJF sjf = new SJF(burstTime, arrivalTime);
+        // print results
+        System.out.println(sjf.toString());
     }
 
     static class Process {
