@@ -32,7 +32,6 @@ public class RR {
 
         ArrayList<Integer> turnarounds = new ArrayList<Integer>();
         ArrayList<Integer> processes = new ArrayList<Integer>();
-        int[] waitsSum = IntStream.range(0,sorted_arrivals.length).boxed().mapToInt(i -> 0).toArray();
 
         int burstsleft = Arrays.stream(sorted_bursts).sum();
         int time = 0;
