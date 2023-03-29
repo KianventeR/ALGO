@@ -1,18 +1,32 @@
-## Getting Started
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+# ALGO (CPU Scheduling Algorithm Simulator)
 
-## Folder Structure
+This is a CPU Scheduling Algorithm Simulator program built with Java by 3 3rd-Year Computer Science students.
+## Acknowledgements
 
-The workspace contains two folders by default, where:
+ - [Soundtrack](https://www.youtube.com/) by < author >
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## Deployment
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+< how to open program, exe file >
 
-## Dependency Management
+###
+< alternative way of opening the program, jar file >
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+###
+< alternative way of opening the program, java file >
+
+
+## Authors
+
+- [@FrancisEspina](https://github.com/FrancisEspina)
+- [@shannaurelle](https://github.com/shannaurelle)
+- [@KianventeR](https://github.com/KianventeR)
+
+
+## Dependencies
+
+The program requires:
+
+- Atleast [JDK 16.0.1](https://www.oracle.com/java/technologies/javase/jdk18-archive-downloads.html)
