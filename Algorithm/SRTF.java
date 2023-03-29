@@ -1,77 +1,135 @@
 package Algorithm;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SRTF {
+    private int[] arrivalTime; // array of arrival time of each process
+    private int[] burstTime; // array of burst time of each process
+    private int numProcesses; // number of processes
 
-    static class Process implements Comparable<Process> {
-        int id;
-        int arrivalTime;
-        int burstTime;
-        int remainingTime;
-
-        public Process(int id, int arrivalTime, int burstTime) {
-            this.id = id;
-            this.arrivalTime = arrivalTime;
-            this.burstTime = burstTime;
-            this.remainingTime = burstTime;
-        }
-
-        public int compareTo(Process p) {
-            return remainingTime - p.remainingTime;
-        }
+    public SRTF(int[] arrivalTime, int[] burstTime) {
+        this.arrivalTime = arrivalTime;
+        this.burstTime = burstTime;
+        this.numProcesses = arrivalTime.length;
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n, t = 0, completed = 0;
-        double avgTurnaroundTime = 0, avgWaitingTime = 0;
-        PriorityQueue<Process> queue = new PriorityQueue<>();
+    public int[] getArrivalTime() {
+        return arrivalTime;
+    }
 
-        System.out.print("Enter the number of processes: ");
-        n = sc.nextInt();
+    public int[] getBurstTime() {
+        return burstTime;
+    }
 
-        Process[] processes = new Process[n];
-        for (int i = 0; i < n; i++) {
-            System.out.printf("Enter arrival time and burst time for process %d: ", i + 1);
-            int arrivalTime = sc.nextInt();
-            int burstTime = sc.nextInt();
-            processes[i] = new Process(i + 1, arrivalTime, burstTime);
-        }
+    public int getNumProcesses() {
+        return numProcesses;
+    }
 
-        Arrays.sort(processes, (p1, p2) -> p1.arrivalTime - p2.arrivalTime);
+    public int[] getTurnaroundTime() {
+        int[] turnaroundTime = new int[numProcesses];
+        int[] remainingTime = Arrays.copyOf(burstTime, numProcesses);
 
-        System.out.println("Gantt Chart:");
+        // initialize variables
+        int currentTime = 0;
+        int completed = 0;
 
-        while (completed < n) {
-            while (!queue.isEmpty() && queue.peek().remainingTime == 0) {
-                Process p = queue.poll();
-                System.out.printf("P%d(%d-%d) ", p.id, t - p.remainingTime, t);
-                avgTurnaroundTime += t - p.arrivalTime;
-                avgWaitingTime += t - p.arrivalTime - p.burstTime;
-                completed++;
-            }
+        while (completed != numProcesses) {
+            int shortestProcess = -1;
+            int shortestTime = Integer.MAX_VALUE;
 
-            for (int i = 0; i < n; i++) {
-                if (processes[i].arrivalTime <= t && processes[i].remainingTime > 0) {
-                    queue.offer(processes[i]);
+            // find the shortest remaining time process at current time
+            for (int i = 0; i < numProcesses; i++) {
+                if (arrivalTime[i] <= currentTime && remainingTime[i] < shortestTime && remainingTime[i] > 0) {
+                    shortestProcess = i;
+                    shortestTime = remainingTime[i];
                 }
             }
 
-            if (queue.isEmpty()) {
-                System.out.printf("idle(%d-%d) ", t, t + 1);
-                t++;
-                continue;
-            }
+            // if no process is found, increment the current time
+            if (shortestProcess == -1) {
+                currentTime++;
+            } else {
+                // execute the shortest remaining time process for one unit
+                remainingTime[shortestProcess]--;
+                currentTime++;
 
-            Process p = queue.poll();
-            System.out.printf("P%d(%d-%d) ", p.id, t, t + 1);
-            p.remainingTime--;
-            t++;
-            queue.offer(p);
+                // if process is completed, update turnaround time and completed counter
+                if (remainingTime[shortestProcess] == 0) {
+                    turnaroundTime[shortestProcess] = currentTime - arrivalTime[shortestProcess];
+                    completed++;
+                }
+            }
         }
 
-        System.out.println();
-        System.out.printf("Average turnaround time: %.2f\n", avgTurnaroundTime / n);
-        System.out.printf("Average waiting time: %.2f\n", avgWaitingTime / n);
+        return turnaroundTime;
+    }
+
+    public int[] getWaitingTime() {
+        int[] waitingTime = new int[numProcesses];
+        int[] turnaroundTime = getTurnaroundTime();
+
+        for (int i = 0; i < numProcesses; i++) {
+            waitingTime[i] = turnaroundTime[i] - burstTime[i];
+        }
+
+        return waitingTime;
+    }
+
+    public String getGanttChart() {
+        int[] remainingTime = Arrays.copyOf(burstTime, numProcesses);
+
+        // initialize variables
+        int currentTime = 0;
+        int completed = 0;
+        ArrayList<String> ganttChart = new ArrayList<>();
+        //StringBuilder builder = new StringBuilder();
+
+        // add initial time to gantt chart
+        ganttChart.add("0");
+
+        while (completed != numProcesses && currentTime < 100) {
+            System.out.println("Time: "+currentTime+" Finished: "+completed);
+            int shortestProcess = -1;
+            int shortestTime = Integer.MAX_VALUE;
+
+            // find the shortest remaining time process at current time
+            for (int i = 0; i < numProcesses; i++) {
+                if (arrivalTime[i] <= currentTime && remainingTime[i] < shortestTime && remainingTime[i] > 0) {
+                    shortestProcess = i;
+                    shortestTime = remainingTime[i];
+                }
+            }
+
+            // if no process is found, increment the current time
+            if (shortestProcess == -1) {
+                currentTime++;
+                ganttChart.add("-");
+            } else {
+                // add process to gantt chart
+                ganttChart.add("P" + shortestProcess);
+
+                // execute the shortest remaining time process for one unit
+                remainingTime[shortestProcess]--;
+                currentTime++;
+
+                // if process is completed, update completed counter
+                if (remainingTime[shortestProcess] == 0) {
+                    completed++;
+                }
+
+            }
+
+        }
+
+        return String.join(" ", ganttChart);
+    }
+
+    public static void main(String[] args){
+        int[] arrivalTime = {0, 2, 4, 5, 7};
+        int[] burstTime = {5, 3, 1, 2, 6};
+        SRTF srtf = new SRTF(burstTime, arrivalTime);
+        // print results
+        System.out.println(srtf.getGanttChart());
     }
 }
