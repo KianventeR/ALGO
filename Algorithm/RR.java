@@ -9,7 +9,6 @@ public class RR {
     private int[] arrivals;
     private int[] processIDs;
     private int[] endTimes;
-    private int[] waitingTimes;
     private int quantum;
 
     public RR(int[] process_times, int[] arrival_times, int time_slice){
@@ -72,9 +71,6 @@ public class RR {
         endTimes = turnarounds.stream().mapToInt(Integer::intValue).toArray();
         arrivals = sorted_arrivals;
         processIDs = processes.stream().mapToInt(Integer::intValue).toArray();
-        waitingTimes = IntStream.range(0,sorted_arrivals.length).boxed()
-                            .mapToInt(i -> endTimes[i] - bursts[i])
-                            .toArray();
     }
 
     public int[] getEndTimes() {
@@ -87,10 +83,6 @@ public class RR {
 
     public int[] getProcessIDs() {
         return processIDs;
-    }
-
-    public int[] getWaitingTimes() {
-        return waitingTimes;
     }
 
     public String toString(){
