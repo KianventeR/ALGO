@@ -6,7 +6,7 @@ public class ALGO extends javax.swing.JFrame {
     public static JPanel mainPanel = new JPanel();
     public static CardLayout card = new CardLayout();
 
-    public static MainMenu mainMenu = new MainMenu();
+    public static MainMenu menu = new MainMenu();
     public static SplashScreen splashScreen = new SplashScreen();
     public static About about = new About();
     public static Help help = new Help();
@@ -23,7 +23,7 @@ public class ALGO extends javax.swing.JFrame {
         mainFrame.setUndecorated(true);
         
         mainPanel.setLayout(card);
-        mainPanel.add(mainMenu, "1");
+        mainPanel.add(menu, "1");
         mainPanel.add(splashScreen, "2");
         mainPanel.add(about, "3");
         mainPanel.add(help, "4");

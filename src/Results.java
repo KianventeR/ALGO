@@ -1,9 +1,16 @@
+import javax.swing.table.DefaultTableModel;
+
 public class Results extends javax.swing.JPanel {
     public Results() {
         initComponents();
     }
-
+    public void reset() {
+        removeAll();
+        initComponents();
+    }
     private void initComponents() {
+       
+       
         minimize = new javax.swing.JButton();
         exit = new javax.swing.JButton();
         results_fms = new javax.swing.JLabel();
@@ -145,21 +152,23 @@ public class Results extends javax.swing.JPanel {
             }
         });
         add(results_return);
+        
         results_return.setBounds(1180, 620, 70, 70);
-
+        results_table.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); 
         results_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8"
+                "ID", "Burst Time", "Arrival Time", "Priority", "Waiting Time", "Turnaround Time", "Avg Waiting Time", "Avg Turnaround Time"
             }
         ));
-        jScrollPane1.setViewportView(results_table);
 
+        
+        jScrollPane1.setViewportView(results_table);
+        
+       
+      
         add(jScrollPane1);
         jScrollPane1.setBounds(110, 230, 1020, 150);
 
@@ -170,6 +179,7 @@ public class Results extends javax.swing.JPanel {
         results_bg.setBounds(0, 0, 1280, 720);
     }
 
+    
     private void results_volMouseEntered(java.awt.event.MouseEvent evt) {
         if(ALGO.sound == true) {
             results_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/mute_hover.png")));
@@ -211,9 +221,11 @@ public class Results extends javax.swing.JPanel {
         results_return.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/window/return.png")));
     }
 
-    private void results_returnActionPerformed(java.awt.event.ActionEvent evt) {
-        Music.sfx();
-        ALGO.card.show(ALGO.mainPanel, "5");
+    private void results_returnActionPerformed(java.awt.event.ActionEvent evt) {     
+        ALGO.select.resetAudioButton(); 
+        ALGO.card.show(ALGO.mainPanel, "6");
+        DefaultTableModel model = (DefaultTableModel) results_table.getModel();
+        model.setRowCount(0);
     }
 
     private void results_menuMouseEntered(java.awt.event.MouseEvent evt) {
@@ -223,9 +235,9 @@ public class Results extends javax.swing.JPanel {
     private void results_menuMouseExited(java.awt.event.MouseEvent evt) {
         results_menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/simulate/menu.png")));
     }
-
+ 
     private void results_menuActionPerformed(java.awt.event.ActionEvent evt) {
-        Music.sfx();
+        ALGO.menu.resetAudioButton();
         ALGO.card.show(ALGO.mainPanel, "1");
     }
 
@@ -255,6 +267,14 @@ public class Results extends javax.swing.JPanel {
         ALGO.mainFrame.setState(java.awt.Frame.ICONIFIED);
     }
 
+    public void resetAudioButton() {
+        if(ALGO.sound == true) {
+            results_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/mute.png")));
+        } else {
+            results_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/muteX.png")));
+        }
+    }
+
     private javax.swing.JButton exit;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton minimize;
@@ -263,7 +283,7 @@ public class Results extends javax.swing.JPanel {
     private javax.swing.JLabel results_label;
     private javax.swing.JButton results_menu;
     private javax.swing.JButton results_return;
-    private javax.swing.JTable results_table;
+    public static javax.swing.JTable results_table;
     private javax.swing.JLabel results_timer;
     private javax.swing.JLabel results_title;
     private javax.swing.JButton results_vol;

@@ -172,6 +172,7 @@ public class MainMenu extends javax.swing.JPanel {
 
     private void menu_startActionPerformed(java.awt.event.ActionEvent evt) {
         Music.sfx();
+        ALGO.select.resetAudioButton();
         ALGO.card.show(ALGO.mainPanel, "5");
     }
 
@@ -279,6 +280,14 @@ public class MainMenu extends javax.swing.JPanel {
     private void minimizeActionPerformed(java.awt.event.ActionEvent evt) {
         Music.sfx();
         ALGO.mainFrame.setState(java.awt.Frame.ICONIFIED);
+    }
+
+    public void resetAudioButton() {
+        if(ALGO.sound == true) {
+            menu_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/mute.png")));
+        } else {
+            menu_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/muteX.png")));
+        }
     }
 
     private javax.swing.JButton exit;

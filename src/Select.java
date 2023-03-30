@@ -232,10 +232,17 @@ public class Select extends javax.swing.JPanel {
     }
 
     private void select_fcfsActionPerformed(java.awt.event.ActionEvent evt) {
+        algo_setter("fcfs");
         Music.sfx();
+        ALGO.input.resetAudioButton();
         ALGO.card.show(ALGO.mainPanel, "6");
     }
 
+    private void algo_setter(String string) {
+        algo = string;
+    }
+    
+    public static String algo;
     private void select_rrMouseEntered(java.awt.event.MouseEvent evt) {
         select_rr.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/round-robin_hover.png")));
         select_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3D/rr.png")));
@@ -246,7 +253,9 @@ public class Select extends javax.swing.JPanel {
     }
 
     private void select_rrActionPerformed(java.awt.event.ActionEvent evt) {
+        algo_setter("rr");
         Music.sfx();
+        ALGO.input.resetAudioButton();
         ALGO.card.show(ALGO.mainPanel, "6");
     }
 
@@ -260,6 +269,7 @@ public class Select extends javax.swing.JPanel {
 
     private void select_returnActionPerformed(java.awt.event.ActionEvent evt) {
         Music.sfx();
+        ALGO.menu.resetAudioButton();
         ALGO.card.show(ALGO.mainPanel, "1");
     }
 
@@ -300,6 +310,7 @@ public class Select extends javax.swing.JPanel {
 
     private void select_sjfActionPerformed(java.awt.event.ActionEvent evt) {
         Music.sfx();
+        ALGO.input.resetAudioButton();
         ALGO.card.show(ALGO.mainPanel, "6");
     }
 
@@ -314,6 +325,7 @@ public class Select extends javax.swing.JPanel {
 
     private void select_prioActionPerformed(java.awt.event.ActionEvent evt) {
         Music.sfx();
+        ALGO.input.resetAudioButton();
         ALGO.card.show(ALGO.mainPanel, "6");
     }
 
@@ -347,6 +359,14 @@ public class Select extends javax.swing.JPanel {
             try {
                 Music.bgMusic.resume();
             } catch (Exception ex) {}
+        }
+    }
+
+    public void resetAudioButton() {
+        if(ALGO.sound == true) {
+            select_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/mute.png")));
+        } else {
+            select_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/muteX.png")));
         }
     }
 
