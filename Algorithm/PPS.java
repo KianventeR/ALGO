@@ -1,83 +1,161 @@
 package Algorithm;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
-import java.util.PriorityQueue;
+import java.util.stream.IntStream;
 
 public class PPS {
-    private static class Process {
-        int processID;
-        int priority;
-        int burstTime;
-        int arrivalTime;
-        int completionTime;
-        int waitingTime;
-        int remainingTime;
-        
-        public Process(int processID, int priority, int burstTime, int arrivalTime) {
-            this.processID = processID;
-            this.priority = priority;
-            this.burstTime = burstTime;
-            this.arrivalTime = arrivalTime;
-            this.remainingTime = burstTime;
-        }
+    private int[] processIds;
+    private int[] arrivalTimes;
+    private int[] burstTimes;
+    private int[] priorities;
+    private int[] completionTimes;
+    private int[] waitingTimes;
+    private int[] turnaroundTimes;
+    private float averageWaitingTime;
+    private float averageTurnaroundTime;
+    private List<String> ganttChart;
+
+    public PPS(int[] pids, int[] arrivalTimes, int[] burstTimes, int[] priorities) {
+        this.processIds = pids;
+        this.arrivalTimes = arrivalTimes;
+        this.burstTimes = burstTimes;
+        this.priorities = priorities;
+        this.completionTimes = new int[pids.length];
+        this.waitingTimes = new int[pids.length];
+        this.turnaroundTimes = new int[pids.length];
+        this.averageWaitingTime = 0;
+        this.averageTurnaroundTime = 0;
+        this.ganttChart = new ArrayList<>();
     }
-    
-    public static void main(String[] args) {
-        // Create a list of processes
-        List<Process> processes = new ArrayList<>();
-        processes.add(new Process(1, 2, 10, 0));
-        processes.add(new Process(2, 1, 5, 1));
-        processes.add(new Process(3, 3, 8, 2));
-        processes.add(new Process(4, 4, 3, 3));
-        
-        // Create a priority queue for processes
-        PriorityQueue<Process> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(p -> p.priority));
-        
-        // Process the processes in the priority queue
+
+    public void schedule() {
+        int[] remainingBurstTimes = Arrays.copyOf(burstTimes, burstTimes.length);
         int currentTime = 0;
-        int totalWaitingTime = 0;
-        while (!priorityQueue.isEmpty() || !processes.isEmpty()) {
-            // Add arriving processes to the priority queue
-            for (int i = 0; i < processes.size(); i++) {
-                Process process = processes.get(i);
-                if (process.arrivalTime <= currentTime) {
-                    priorityQueue.add(process);
-                    processes.remove(i);
-                    i--;
+        int completed = 0;
+        boolean[] isCompleted = new boolean[processIds.length];
+        while (completed != processIds.length) {
+            int highestPriorityProcess = -1;
+            int highestPriority = Integer.MAX_VALUE;
+            for (int i = 0; i < processIds.length; i++) {
+                if (arrivalTimes[i] <= currentTime && !isCompleted[i] && priorities[i] < highestPriority && remainingBurstTimes[i] > 0) {
+                    highestPriorityProcess = i;
+                    highestPriority = priorities[i];
                 }
             }
-            
-            // If the priority queue is not empty, process the highest priority process
-            if (!priorityQueue.isEmpty()) {
-                Process process = priorityQueue.poll();
-                
-                // Update waiting time for all processes in the priority queue
-                for (Process p : priorityQueue) {
-                    p.waitingTime += process.remainingTime;
-                }
-                
-                // Process the current process
-                int timeSlice = Math.min(1, process.remainingTime);
-                currentTime += timeSlice;
-                process.remainingTime -= timeSlice;
-                
-                // If the current process is not completed, add it back to the priority queue
-                if (process.remainingTime > 0) {
-                    priorityQueue.add(process);
-                } else {
-                    process.completionTime = currentTime;
-                    totalWaitingTime += process.waitingTime;
-                    System.out.println("Processing process ID " + process.processID + " with priority " + process.priority 
-                                        + ", burst time " + process.burstTime + ", arrival time " + process.arrivalTime 
-                                        + ", completion time " + process.completionTime + ", waiting time " + process.waitingTime + ".");
-                }
+            if (highestPriorityProcess == -1) {
+                currentTime++;
             } else {
+                remainingBurstTimes[highestPriorityProcess]--;
+                if (remainingBurstTimes[highestPriorityProcess] == 0) {
+                    completed++;
+                    isCompleted[highestPriorityProcess] = true;
+                    completionTimes[highestPriorityProcess] = currentTime + 1;
+                    turnaroundTimes[highestPriorityProcess] = completionTimes[highestPriorityProcess] - arrivalTimes[highestPriorityProcess];
+                    waitingTimes[highestPriorityProcess] = turnaroundTimes[highestPriorityProcess] - burstTimes[highestPriorityProcess];
+                    averageWaitingTime += waitingTimes[highestPriorityProcess];
+                    averageTurnaroundTime += turnaroundTimes[highestPriorityProcess];
+                }
+                ganttChart.add(String.format("| P%d ", processIds[highestPriorityProcess]));
                 currentTime++;
             }
         }
-        double averageWaitingTime = (double) totalWaitingTime / (processes.size() + priorityQueue.size());
-        System.out.println("Average waiting time: " + averageWaitingTime);
+        averageWaitingTime /= processIds.length;
+        averageTurnaroundTime /= processIds.length;
+    }
+
+    public int[] getProcessIds() {
+        return processIds;
+    }
+
+    public int[] getArrivalTimes() {
+        return arrivalTimes;
+    }
+
+    public int[] getBurstTimes() {
+        return burstTimes;
+    }
+
+    public int[] getPriorities() {
+        return priorities;
+    }
+
+    public int[] getCompletionTimes() {
+        return completionTimes;
+    }
+
+    public int[] getWaitingTimes() {
+        return waitingTimes;
+    }
+
+    public int[] getTurnaroundTimes() {
+        return turnaroundTimes;
+    }
+
+    public float getAverageWaitingTime() {
+        return averageWaitingTime;
+    }
+
+    public float getAverageTurnaroundTime() {
+        return averageTurnaroundTime;
+    }
+
+    public String getGanttChart() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("+");
+        for (int i = 0; i < ganttChart.size(); i++) {
+            sb.append("-");
+        }
+        sb.append("+\n");
+        sb.append("|");
+        for (int i = 0; i < ganttChart.size(); i++) {
+            sb.append(ganttChart.get(i));
+                if(i < ganttChart.size() - 1){
+                    if(ganttChart.get(i).equals(ganttChart.get(i+1))){
+                        sb.append(" ");
+                    }else{
+                        sb.append("|");
+                    }
+                }
+        }
+        sb.append("|\n");
+        sb.append("+");
+        for (int i = 0; i < ganttChart.size(); i++) {
+            sb.append("-");
+        }
+        sb.append("+\n");
+        sb.append("0");
+        for (int i = 0; i < ganttChart.size(); i++) {
+            if (ganttChart.get(i).contains("|")) {
+                sb.append(String.format("%3d", i+1));
+            } else {
+                sb.append("   ");
+            }
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
+    public static void main(String[] args) {
+        int[] arrivals = {1,2,3,4};
+        int[] bursts = {1,2,3,4};
+        int[] priorities = {4,3,2,1};
+        int[] pids = IntStream.range(0,arrivals.length).toArray();
+        PPS scheduler = new PPS(pids,arrivals,bursts,priorities);
+ 
+        scheduler.schedule();;
+        String ganttChart = scheduler.getGanttChart();
+        System.out.println(ganttChart);
+        for(int num : scheduler.getWaitingTimes()){
+            System.out.print(num + " ");
+        }
+        System.out.println();
+        for(int num : scheduler.getTurnaroundTimes()){
+            System.out.print(num+ " ");
+        }
+        System.out.println();
+        System.out.println(scheduler.getAverageWaitingTime());
+        System.out.println(scheduler.getAverageTurnaroundTime());
     }
 }
+    
