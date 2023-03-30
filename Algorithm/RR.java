@@ -128,6 +128,14 @@ public class RR {
         return waitingTimes;
     }
 
+    public double getAverageWaitingTime() {
+        return averageWaitingTime;
+    }
+
+    public double getAverageTurnaroundTime() {
+        return averageTurnaroundTime;
+    }
+
     public String toString(){
 
         int[] ends = this.getEndTimes();
