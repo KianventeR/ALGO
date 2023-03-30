@@ -5,22 +5,25 @@ import java.util.Collections;
 import java.util.stream.IntStream;
 
 class Job {
-    private String name;
+    private String id;
     private int arrivalTime;
     private int burstTime;
     private int priority;
     private int startTime;
     private int finishTime;
 
-    public Job(String name, int arrivalTime, int burstTime, int priority) {
-        this.name = name;
+    public Job(String id, int arrivalTime, int burstTime, int priority) {
+        this.id = id;
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.priority = priority;
     }
 
-    public String getName() {
-        return name;
+    public String getName(){
+        return id;
+    }
+    public int getId() {
+        return Integer.parseInt(this.id.replace("P", ""));
     }
 
     public int getArrivalTime() {
@@ -77,9 +80,39 @@ public class NPPS {
         }
     }
 
+    public int[] getProcessIDs(){
+        return IntStream.range(0, jobs.size()).boxed()
+            .mapToInt(i -> jobs.get(i).getId()).toArray();
+    }
+
+    public int[] getBursts(){
+        return IntStream.range(0, jobs.size()).boxed()
+            .mapToInt(i -> jobs.get(i).getBurstTime()).toArray();
+    }
+
     public int[] getArrivals(){
         return IntStream.range(0, jobs.size()).boxed()
             .mapToInt(i -> jobs.get(i).getArrivalTime()).toArray();
+    }
+
+    public int[] getStartTimes(){
+        int[] startTimes = new int[jobs.size()];
+
+        for (int i = 0; i < jobs.size(); i++) {
+            startTimes[i] = jobs.get(i).getStartTime();
+        }
+
+        return startTimes;
+    }
+
+    public int[] getEndTimes(){
+        int[] endTimes = new int[jobs.size()];
+
+        for (int i = 0; i < jobs.size(); i++) {
+            endTimes[i] = jobs.get(i).getFinishTime();
+        }
+
+        return endTimes;
     }
 
     public int[] getWaitingTimes() {
