@@ -20,6 +20,7 @@ public class SJF {
         for (int i = 0; i < numProcesses; i++) {
             this.remainingTime[i] = burstTime[i];
         }
+        this.calculate();
     }
     
     public int[] getArrivalTime() {
