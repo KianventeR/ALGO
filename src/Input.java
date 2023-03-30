@@ -94,6 +94,7 @@ public class Input extends javax.swing.JPanel {
         input_labels.setBounds(570, 110, 580, 90);
 
         input_table.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); 
+        input_table.setFocusable(false);
         input_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -468,8 +469,7 @@ public class Input extends javax.swing.JPanel {
 
     private void input_inputActionPerformed(java.awt.event.ActionEvent evt) {                                            
         Music.sfx();
-        String algo = Select.algo;
-        // System.out.println(algo);
+        System.out.println(ALGO.select.algo);
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)input_table.getModel();
         try {
             int id = Integer.parseInt(input_ID.getText());
@@ -480,25 +480,25 @@ public class Input extends javax.swing.JPanel {
             
 
         
-            if(algo == "fcfs"){
+            if(ALGO.select.algo == "fcfs"){
                 if(burst > 30 | burst < 1 | arrival > 30 | arrival < 1 | prio > 30 | prio < 1 | quantum > 10 | quantum < 1) {
                     return;
                 }
                 input_to_fcfs(id, burst, arrival);
             }
-            else if(algo == "rr"){
+            else if(ALGO.select.algo == "rr"){
                 input_to_rr();
             }
-            else if(algo == "prio-np"){
+            else if(ALGO.select.algo == "prio-np"){
                 
             }
-            else if(algo == "prio-p"){
+            else if(ALGO.select.algo == "prio-p"){
 
             }
-            else if(algo == "sjf-np"){
+            else if(ALGO.select.algo == "sjf-np"){
                 
             }
-            else if(algo == "sjf-p"){
+            else if(ALGO.select.algo == "sjf-p"){
 
             }
            
@@ -557,8 +557,7 @@ public class Input extends javax.swing.JPanel {
         }
         
         Music.sfx();
-        String algo = Select.algo;
-        if(algo == "fcfs"){
+        if(ALGO.select.algo == "fcfs"){
             fcfs fcfs = new fcfs(burstArray, arrivalArray);
             System.out.println(fcfs);
             javax.swing.table.DefaultTableModel model2 = (javax.swing.table.DefaultTableModel)Results.results_table.getModel();
@@ -596,19 +595,19 @@ public class Input extends javax.swing.JPanel {
             }
 
         }
-        else if(algo == "rr"){
+        else if(ALGO.select.algo == "rr"){
             
         }
-        else if(algo == "prio-np"){
+        else if(ALGO.select.algo == "prio-np"){
             
         }
-        else if(algo == "prio-p"){
+        else if(ALGO.select.algo == "prio-p"){
 
         }
-        else if(algo == "sjf-np"){
+        else if(ALGO.select.algo == "sjf-np"){
             
         }
-        else if(algo == "sjf-p"){
+        else if(ALGO.select.algo == "sjf-p"){
 
         }
         

@@ -235,14 +235,23 @@ public class Select extends javax.swing.JPanel {
         algo_setter("fcfs");
         Music.sfx();
         ALGO.input.resetAudioButton();
-        ALGO.card.show(ALGO.mainPanel, "6");
+
+        ALGO.load.setBG(algo);
+        ALGO.card.show(ALGO.mainPanel, "8");
+
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                ALGO.card.show(ALGO.mainPanel, "6");
+            }
+        }, 2 * 1000); // Miliseconds
     }
 
-    private void algo_setter(String string) {
+    public void algo_setter(String string) {
         algo = string;
     }
     
-    public static String algo;
+    public String algo;
     private void select_rrMouseEntered(java.awt.event.MouseEvent evt) {
         select_rr.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/round-robin_hover.png")));
         select_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/3D/rr.png")));
@@ -256,7 +265,15 @@ public class Select extends javax.swing.JPanel {
         algo_setter("rr");
         Music.sfx();
         ALGO.input.resetAudioButton();
-        ALGO.card.show(ALGO.mainPanel, "6");
+        ALGO.load.setBG(algo);
+        ALGO.card.show(ALGO.mainPanel, "8");
+
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                ALGO.card.show(ALGO.mainPanel, "6");
+            }
+        }, 2 * 1000); // Miliseconds
     }
 
     private void select_returnMouseEntered(java.awt.event.MouseEvent evt) {
@@ -309,9 +326,11 @@ public class Select extends javax.swing.JPanel {
     }
 
     private void select_sjfActionPerformed(java.awt.event.ActionEvent evt) {
+        algo_setter("sjf");
         Music.sfx();
         ALGO.input.resetAudioButton();
-        ALGO.card.show(ALGO.mainPanel, "6");
+        ALGO.selectP.setIcon();
+        ALGO.card.show(ALGO.mainPanel, "9");
     }
 
     private void select_prioMouseEntered(java.awt.event.MouseEvent evt) {
@@ -324,9 +343,11 @@ public class Select extends javax.swing.JPanel {
     }
 
     private void select_prioActionPerformed(java.awt.event.ActionEvent evt) {
+        algo_setter("prio");
         Music.sfx();
         ALGO.input.resetAudioButton();
-        ALGO.card.show(ALGO.mainPanel, "6");
+        ALGO.selectP.setIcon();
+        ALGO.card.show(ALGO.mainPanel, "9");
     }
 
     private void select_volMouseEntered(java.awt.event.MouseEvent evt) {

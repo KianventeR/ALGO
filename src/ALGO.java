@@ -13,6 +13,8 @@ public class ALGO extends javax.swing.JFrame {
     public static Select select = new Select();
     public static Input input = new Input();
     public static Results results = new Results();
+    public static Loading load = new Loading();
+    public static SelectPreempt selectP = new SelectPreempt();
     
     public static boolean sound = true;
     
@@ -30,6 +32,8 @@ public class ALGO extends javax.swing.JFrame {
         mainPanel.add(select, "5");
         mainPanel.add(input, "6");
         mainPanel.add(results, "7");
+        mainPanel.add(load, "8");
+        mainPanel.add(selectP, "9");
         
         mainFrame.add(mainPanel);
         mainFrame.pack();
