@@ -15,6 +15,8 @@ public class FCFS {
     private int[] startTimes;
     private int[] endTimes;
     private int[] processIDs;
+    private double avgWaitingTime;
+    private double avgTurnaroundTime;
 
     public FCFS(ArrayList<Integer> arrivalArray, ArrayList<Integer> burstArray) {
         this.arrivalTime = arrivalArray;
@@ -70,6 +72,8 @@ public class FCFS {
         }
         double averageWaitingTime = waitingTime.stream().mapToInt(i -> i).average().orElse(0.0);
         double averageTurnaroundTime = turnaroundTime.stream().mapToInt(i -> i).average().orElse(0.0);
+        avgWaitingTime = averageWaitingTime;
+        avgTurnaroundTime = averageTurnaroundTime;
 
         waitingTimes = waitingTime.stream().mapToInt(Integer::intValue).toArray();
         turnaroundTimes = turnaroundTime.stream().mapToInt(Integer::intValue).toArray();
