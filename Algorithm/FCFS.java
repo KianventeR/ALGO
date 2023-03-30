@@ -16,7 +16,7 @@ public class FCFS {
     private int[] endTimes;
     private int[] processIDs;
 
-    public FCFS(ArrayList<Integer> burstArray, ArrayList<Integer> arrivalArray) {
+    public FCFS(ArrayList<Integer> arrivalArray, ArrayList<Integer> burstArray) {
         this.arrivalTime = arrivalArray;
         this.burstTime = burstArray;
         this.processes = new ArrayList<>();
