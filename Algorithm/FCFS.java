@@ -31,14 +31,13 @@ public class FCFS {
 
         simulate();
         // sorted bursts
-        int[] burstCopy = burstTime.stream().mapToInt(Integer::intValue).toArray();
         burstTime = IntStream.range(0, arrivalTime.size()).boxed()
-            .sorted(Comparator.comparingInt(i -> arrivalTime.get(i)))
-            .map(i -> burstCopy[i])
+            .map(i -> processes.get(i).getBurstTime())
             .collect(Collectors.toCollection(ArrayList::new));
         // sorted arrival
-        arrivalTime.sort(Comparator.comparingInt(i -> arrivalTime.get(i)));
-
+        arrivalTime = IntStream.range(0, arrivalTime.size()).boxed()
+            .map(i -> processes.get(i).getArrivalTime())
+            .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public String simulate() {
