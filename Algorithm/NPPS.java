@@ -135,6 +135,17 @@ public class NPPS {
         return turnaroundTimes;
     }
 
+    public int[] getPriorities(){
+        int[] priorities = new int[jobs.size()];
+
+        for (int i = 0; i < jobs.size(); i++) {
+            priorities[i] = jobs.get(i).getPriority();
+        }
+
+        return priorities;
+
+    }
+
 
     public double getAverageWaitingTime(){
         double sum = 0;
