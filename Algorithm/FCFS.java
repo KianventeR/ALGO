@@ -38,6 +38,10 @@ public class FCFS {
         arrivalTime = IntStream.range(0, arrivalTime.size()).boxed()
             .map(i -> processes.get(i).getArrivalTime())
             .collect(Collectors.toCollection(ArrayList::new));
+        // sorted process ids
+        processIDs = IntStream.range(0, arrivalTime.size()).boxed()
+            .mapToInt(i -> processes.get(i).getId())
+            .toArray();
     }
 
     public String simulate() {
