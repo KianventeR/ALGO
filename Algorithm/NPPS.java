@@ -153,8 +153,6 @@ public class NPPS {
         return chart.toString();
     }
 
-    
-
     public static void main(String[] args) {
         NPPS scheduler = new NPPS();
         int[] arrivals = {1,2,3,4};
