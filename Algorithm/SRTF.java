@@ -1,22 +1,28 @@
 package Algorithm;
 
+import java.util.stream.IntStream;
+
 public class SRTF {
     private int[] arrivalTime;
     private int[] burstTime;
     private int numProcesses;
-    private int[] turnaroundTime;
-    private int[] waitingTime;
+    private int[] turnaroundTimes;
+    private int[] waitingTimes;
     private int[] remainingTime;
-    private int[] completionTime;
+    private int[] completionTimes;
+    private int[] startTimes;
+    private double averageTurnaroundTime;
+    private double averageWaitingTime;
     
     public SRTF(int[] arrivalTime, int[] burstTime, int numProcesses) {
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.numProcesses = numProcesses;
-        this.turnaroundTime = new int[numProcesses];
-        this.waitingTime = new int[numProcesses];
+        this.turnaroundTimes = new int[numProcesses];
+        this.waitingTimes = new int[numProcesses];
         this.remainingTime = new int[numProcesses];
-        this.completionTime = new int[numProcesses];
+        this.completionTimes = new int[numProcesses];
+        this.startTimes = new int[numProcesses];
         for (int i = 0; i < numProcesses; i++) {
             this.remainingTime[i] = burstTime[i];
         }
@@ -30,12 +36,28 @@ public class SRTF {
         return burstTime;
     }
     
-    public int[] getTurnaroundTime() {
-        return turnaroundTime;
+    public int[] getTurnaroundTimes() {
+        return turnaroundTimes;
     }
     
-    public int[] getWaitingTime() {
-        return waitingTime;
+    public int[] getWaitingTimes() {
+        return waitingTimes;
+    }
+
+    public int[] getCompletionTimes() {
+        return completionTimes;
+    }
+
+    public int[] getStartTimes() {
+        return startTimes;
+    }
+
+    public double getAverageWaitingTime() {
+        return averageWaitingTime;
+    }
+
+    public double getAverageTurnaroundTime() {
+        return averageTurnaroundTime;
     }
     
     public String getGanttChart() {
@@ -60,7 +82,7 @@ public class SRTF {
                 remainingTime[nextProcess]--; // Decrement remaining time of current process
                 if (remainingTime[nextProcess] == 0) { // If current process has completed
                     currentTime++;
-                    completionTime[nextProcess] = currentTime;
+                    completionTimes[nextProcess] = currentTime;
                     completed[nextProcess] = 1;
                     completedCount++;
                 }
@@ -73,11 +95,16 @@ public class SRTF {
         int[] turnaroundTime = new int[numProcesses];
         int[] waitingTime = new int[numProcesses];
         for (int i = 0; i < numProcesses; i++) {
-            turnaroundTime[i] = completionTime[i] - arrivalTime[i];
+            turnaroundTime[i] = completionTimes[i] - arrivalTime[i];
             waitingTime[i] = turnaroundTime[i] - burstTime[i];
+            startTimes[i] = waitingTime[i] + arrivalTime[i];
         }
-        this.turnaroundTime = turnaroundTime;
-        this.waitingTime = waitingTime;
+        this.turnaroundTimes = turnaroundTime;
+        this.waitingTimes = waitingTime;
+        averageWaitingTime = IntStream.range(0,waitingTimes.length).boxed()
+            .mapToInt(i -> waitingTimes[i]).average().orElse(0.0);
+        averageTurnaroundTime = IntStream.range(0,turnaroundTimes.length).boxed()
+            .mapToInt(i -> turnaroundTimes[i]).average().orElse(0.0); 
     }
 
     public static void main(String[] args){
