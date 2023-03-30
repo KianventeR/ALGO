@@ -1,5 +1,8 @@
 package Algorithm;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class FCFS {
 
@@ -19,6 +22,11 @@ public class FCFS {
         for (int i = 0; i < arrivalTime.length; i++) {
             processes.add(new Process(i + 1, arrivalTime[i], burstTime[i]));
         }
+        // sort by arrival time
+        this.processes = IntStream.range(0, processes.size()).boxed()
+        .sorted(Comparator.comparingInt(i -> processes.get(i).getArrivalTime()))
+        .map(i-> processes.get(i))
+        .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public String simulate() {
