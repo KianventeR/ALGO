@@ -17,6 +17,8 @@ public class FCFS{
     private int[] processIDs;
     private int[] endTimes;
     private int[] waitingTimes;
+    //private String[] ganttLabels;
+    //private int[] ganttValues;
 
     public FCFS(int[] process_times, int[] arrival_times){
         bursts = process_times;
@@ -78,7 +80,6 @@ public class FCFS{
     public int[] getWaitingTimes() {
         return waitingTimes;
     }
-
     // Character User Interface for testing in console
     public String toString(){
         final int[] turns = this.getEndTimes();
@@ -93,8 +94,8 @@ public class FCFS{
 
     public static void main(String[] args){
 
-        int[] bursts = {10,20,30,40,50};
-        int[] arrivals = {1,12,13,14,15};
+        int[] bursts = {1,2,3};
+        int[] arrivals = {1,3,2};
         FCFS test_fcfs = new FCFS(bursts, arrivals);
 
         System.out.println(test_fcfs.toString());
