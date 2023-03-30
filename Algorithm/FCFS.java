@@ -34,7 +34,7 @@ public class FCFS {
         // sorted bursts
         int[] burstCopy = burstTime.clone();
         burstTime = IntStream.range(0, arrivalTime.length).boxed()
-            .sorted(Comparator.comparingInt(i -> processes.get(i).getArrivalTime()))
+            .sorted(Comparator.comparingInt(i -> arrivalTime[i]))
             .mapToInt(i -> burstCopy[i])
             .toArray();
         // sorted arrival times
