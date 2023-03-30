@@ -10,6 +10,7 @@ public class FCFS {
     private int[] turnaroundTimes;
     private int[] startTimes;
     private int[] endTimes;
+    private int[] processIDs;
 
     public FCFS(int[] arrivalTime, int[] burstTime) {
         this.arrivalTime = arrivalTime;
@@ -25,6 +26,7 @@ public class FCFS {
         ArrayList<Integer> turnaroundTime = new ArrayList<>();
         ArrayList<Integer> starts = new ArrayList<>();
         ArrayList<Integer> ends = new ArrayList<>();
+        ArrayList<Integer> pids = new ArrayList<>();
 
         int currentTime = 0;
         String ganttChart = "";
@@ -36,6 +38,8 @@ public class FCFS {
             ganttChart += "P" + p.getId() + " ";
             currentTime += p.getBurstTime();
             p.setEndTime(currentTime);
+
+            pids.add(p.getId());
             starts.add(p.getStartTime());
             ends.add(p.getEndTime());
             waitingTime.add(p.getStartTime() - p.getArrivalTime());
@@ -48,6 +52,7 @@ public class FCFS {
         turnaroundTimes = turnaroundTime.stream().mapToInt(Integer::intValue).toArray();
         startTimes = starts.stream().mapToInt(Integer::intValue).toArray();
         endTimes = ends.stream().mapToInt(Integer::intValue).toArray();
+        processIDs = pids.stream().mapToInt(Integer::intValue).toArray();
         String result = "Average Waiting Time: " + averageWaitingTime + "\nAverage Turnaround Time: " + averageTurnaroundTime + "\nGantt Chart: " + ganttChart;
         return result;
     }
@@ -78,6 +83,10 @@ public class FCFS {
     
     public int[] getEndTimes() {
         return endTimes;
+    }
+
+    public int[] getProcessIDs() {
+        return processIDs;
     }
     public static void main(String[] args) {
         int[] arrivalTime = {1,3,2};
