@@ -1,4 +1,7 @@
+package Algorithm;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,8 +18,8 @@ public class FCFS {
     private int[] processIDs;
 
     public FCFS(ArrayList<Integer> burstArray, ArrayList<Integer> arrivalArray) {
-        this.arrivalTime = burstArray;
-        this.burstTime = arrivalArray;
+        this.arrivalTime = arrivalArray;
+        this.burstTime = burstArray;
         this.processes = new ArrayList<>();
         for (int i = 0; i < burstArray.size(); i++) {
             processes.add(new Process(i + 1, burstArray.get(i), arrivalArray.get(i)));
@@ -34,8 +37,7 @@ public class FCFS {
             .sorted(Comparator.comparingInt(i -> arrivalTime[i]))
             .mapToInt(i -> burstCopy[i])
             .toArray();
-        // sorted arrival times
-        Arrays.sort(arrivalTime);
+    
 
     }
 
