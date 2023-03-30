@@ -1,7 +1,6 @@
 package Algorithm;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -33,11 +32,12 @@ public class FCFS {
         simulate();
         // sorted bursts
         int[] burstCopy = burstTime.stream().mapToInt(Integer::intValue).toArray();
-        burstTime = IntStream.range(0, arrivalTime.length).boxed()
-            .sorted(Comparator.comparingInt(i -> arrivalTime[i]))
-            .mapToInt(i -> burstCopy[i])
-            .toArray();
-    
+        burstTime = IntStream.range(0, arrivalTime.size()).boxed()
+            .sorted(Comparator.comparingInt(i -> arrivalTime.get(i)))
+            .map(i -> burstCopy[i])
+            .collect(Collectors.toCollection(ArrayList::new));
+        // sorted arrival
+        arrivalTime.sort(Comparator.comparingInt(i -> arrivalTime.get(i)));
 
     }
 
