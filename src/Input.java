@@ -3,9 +3,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class Input extends javax.swing.JPanel {
-    
     public Input() {
-        
        initComponents();
     }
     public static ArrayList<Integer> burstArray = new ArrayList<Integer>();
@@ -18,7 +16,6 @@ public class Input extends javax.swing.JPanel {
         input_labels = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         input_table = new javax.swing.JTable();
-        input_ID = new javax.swing.JTextField();
         input_burstIn = new javax.swing.JTextField();
         input_arrivalIn = new javax.swing.JTextField();
         input_prioIn = new javax.swing.JTextField();
@@ -32,8 +29,6 @@ public class Input extends javax.swing.JPanel {
         input_input3 = new javax.swing.JLabel();
         input_burst = new javax.swing.JLabel();
         input_input2 = new javax.swing.JLabel();
-        input_processID = new javax.swing.JLabel();
-        input_input1 = new javax.swing.JLabel();
         input_algo = new javax.swing.JLabel();
         input_random = new javax.swing.JButton();
         input_simulate = new javax.swing.JButton();
@@ -126,14 +121,6 @@ public class Input extends javax.swing.JPanel {
 
         add(jScrollPane2);
         jScrollPane2.setBounds(580, 190, 560, 402);
-
-        input_ID.setFont(new java.awt.Font("Poppins SemiBold", 0, 24)); 
-        input_ID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        input_ID.setToolTipText("");
-        input_ID.setBorder(null);
-        input_ID.setOpaque(false);
-        add(input_ID);
-        input_ID.setBounds(390, 190, 130, 50);
 
         input_burstIn.setFont(new java.awt.Font("Poppins SemiBold", 0, 24)); 
         input_burstIn.setForeground(new java.awt.Color(153, 153, 153));
@@ -259,18 +246,6 @@ public class Input extends javax.swing.JPanel {
         input_input2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         add(input_input2);
         input_input2.setBounds(390, 250, 130, 50);
-
-        input_processID.setFont(new java.awt.Font("Poppins Black", 0, 32)); 
-        input_processID.setForeground(new java.awt.Color(255, 255, 255));
-        input_processID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        input_processID.setText("Process ID:");
-        add(input_processID);
-        input_processID.setBounds(90, 190, 280, 50);
-
-        input_input1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/input_box.png"))); 
-        input_input1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        add(input_input1);
-        input_input1.setBounds(390, 190, 130, 50);
 
         input_algo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/fcfs-title.png"))); 
         input_algo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -420,6 +395,7 @@ public class Input extends javax.swing.JPanel {
 
     public void input_returnActionPerformed(java.awt.event.ActionEvent evt) {                                             
         Music.sfx();
+        count = 0;
         reset();
         ALGO.card.show(ALGO.mainPanel, "1");
        
@@ -472,19 +448,27 @@ public class Input extends javax.swing.JPanel {
         System.out.println(ALGO.select.algo);
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)input_table.getModel();
         try {
-            int id = Integer.parseInt(input_ID.getText());
+            count++;
+            int id = count;
             int burst = Integer.parseInt(input_burstIn.getText());
             int arrival = Integer.parseInt(input_arrivalIn.getText());
-            int prio = Integer.parseInt(input_prioIn.getText());
-            int quantum = Integer.parseInt(input_quantumIn.getText());
+            //int prio = Integer.parseInt(input_prioIn.getText());
+            //int quantum = Integer.parseInt(input_quantumIn.getText());
+            System.out.println(ALGO.select.algo + "test");
             
-
-        
-            if(ALGO.select.algo == "fcfs"){
-                if(burst > 30 | burst < 1 | arrival > 30 | arrival < 1 | prio > 30 | prio < 1 | quantum > 10 | quantum < 1) {
+            if(ALGO.select.algo == "fcfs") {
+                if(burst > 30 | burst < 1 | arrival > 30 | arrival < 1) {
                     return;
                 }
+                System.out.println("test");
                 input_to_fcfs(id, burst, arrival);
+                Object[] row = { "P"+ id, burst, arrival, "--" };
+                model.addRow(row);
+                
+                if (input_table.getColumnModel().getColumnCount() > 0) {
+                    javax.swing.table.DefaultTableCellRenderer cellRenderer = new javax.swing.table.DefaultTableCellRenderer();
+                    cellRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+                }
             }
             else if(ALGO.select.algo == "rr"){
                 input_to_rr();
@@ -501,26 +485,15 @@ public class Input extends javax.swing.JPanel {
             else if(ALGO.select.algo == "sjf-p"){
 
             }
-           
-            
-            Object[] row = { "P"+ id, burst, arrival, prio };
-            model.addRow(row);
-            
-            if (input_table.getColumnModel().getColumnCount() > 0) {
-                javax.swing.table.DefaultTableCellRenderer cellRenderer = new javax.swing.table.DefaultTableCellRenderer();
-                cellRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
-            }
         } catch (Exception e) {
             return;
         }
-        
-        input_ID.setText("");
+
         input_burstIn.setText("");
         input_arrivalIn.setText("");
         input_prioIn.setText("");
         input_quantumIn.setText("");
 
-    
         input_burstInFocusLost(null);
         input_arrivalInFocusLost(null);
         input_prioInFocusLost(null);
@@ -551,6 +524,7 @@ public class Input extends javax.swing.JPanel {
     }                                          
     public void input_simulateActionPerformed(java.awt.event.ActionEvent evt) {    
         Music.sfx();
+        count = 0;
         if(pidArray.size() < 3){
             JOptionPane.showMessageDialog(null, "Input atleast three (3) processes.");
             return;
@@ -731,7 +705,30 @@ public class Input extends javax.swing.JPanel {
             input_quantumIn.setText("1-10");
             input_quantumIn.setForeground(new java.awt.Color(153, 153, 153));
         }
-    }               
+    }         
+    
+    public void setInputs() {
+        if(ALGO.select.algo == "fcfs") {
+            ALGO.input.input_burstIn.setEnabled(true);
+            ALGO.input.input_burst.setEnabled(true);
+            ALGO.input.input_arrivalIn.setEnabled(true);
+            ALGO.input.input_arrival.setEnabled(true);
+            ALGO.input.input_prioIn.setEnabled(false);
+            ALGO.input.input_priority.setEnabled(false);
+            ALGO.input.input_quantumIn.setEnabled(false);
+            ALGO.input.input_quantum.setEnabled(false);
+        }else if(ALGO.select.algo == "rr") {
+            
+        }else if(ALGO.select.algo == "prio-np") {
+            
+        }else if(ALGO.select.algo == "prio-p") {
+
+        }else if(ALGO.select.algo == "sjf-np") {
+            
+        }else if(ALGO.select.algo == "sjf-p") {
+
+        }
+    }
     
     public void resetAudioButton() {
         if(ALGO.sound == true) {
@@ -770,4 +767,6 @@ public class Input extends javax.swing.JPanel {
     private javax.swing.JButton input_vol;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton minimize;
+
+    public int count = 0;
 }

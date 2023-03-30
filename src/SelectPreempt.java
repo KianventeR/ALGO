@@ -93,7 +93,7 @@ public class SelectPreempt extends javax.swing.JPanel {
             }
         });
         add(select_preemptP);
-        select_preemptP.setBounds(150, 310, 332, 50);
+        select_preemptP.setBounds(150, 310, 350, 50);
 
         select_nonpreemptP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/non-preemptive.png"))); // NOI18N
         select_nonpreemptP.setBorder(null);
@@ -115,7 +115,7 @@ public class SelectPreempt extends javax.swing.JPanel {
             }
         });
         add(select_nonpreemptP);
-        select_nonpreemptP.setBounds(150, 370, 440, 50);
+        select_nonpreemptP.setBounds(150, 370, 460, 50);
 
         select_logo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         select_logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -203,19 +203,26 @@ public class SelectPreempt extends javax.swing.JPanel {
     }                                    
 
     private void select_nonpreemptPMouseEntered(java.awt.event.MouseEvent evt) {                                                
-        select_nonpreemptP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/non-preemptive.png")));
+        select_nonpreemptP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/non-preemptive_hover.png")));
     }                                               
 
     private void select_nonpreemptPMouseExited(java.awt.event.MouseEvent evt) {                                               
         select_nonpreemptP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/non-preemptive.png")));
     }                                              
 
-    private void select_nonpreemptPActionPerformed(java.awt.event.ActionEvent evt) {                                                   
-        // TODO add your handling code here:
+    private void select_nonpreemptPActionPerformed(java.awt.event.ActionEvent evt) {         
+        if(ALGO.select.algo == "prio") {
+            ALGO.select.algo_setter("prio-np");  
+        }else {
+            ALGO.select.algo_setter("sjf-np");  
+        }                                          
+        Music.sfx();
+        ALGO.input.setInputs();
+        ALGO.card.show(ALGO.mainPanel, "6");
     }                                                  
 
     private void select_preemptPMouseEntered(java.awt.event.MouseEvent evt) {                
-        select_preemptP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/preemptive.png")));
+        select_preemptP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/preemptive_hover.png")));
     }                                            
 
     private void select_preemptPMouseExited(java.awt.event.MouseEvent evt) {                                     
@@ -223,9 +230,13 @@ public class SelectPreempt extends javax.swing.JPanel {
     }                                           
 
     private void select_preemptPActionPerformed(java.awt.event.ActionEvent evt) {            
-        ALGO.select.algo_setter("sjf-p");                                    
+        if(ALGO.select.algo == "prio") {
+            ALGO.select.algo_setter("prio-p");  
+        }else {
+            ALGO.select.algo_setter("sjf-p");  
+        }                                               
         Music.sfx();
-        
+        ALGO.input.setInputs();
         ALGO.card.show(ALGO.mainPanel, "6");
     }                                               
 

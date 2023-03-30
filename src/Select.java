@@ -235,7 +235,7 @@ public class Select extends javax.swing.JPanel {
         algo_setter("fcfs");
         Music.sfx();
         ALGO.input.resetAudioButton();
-
+        ALGO.input.setInputs();
         ALGO.load.setBG(algo);
         ALGO.card.show(ALGO.mainPanel, "8");
 
@@ -266,6 +266,7 @@ public class Select extends javax.swing.JPanel {
         Music.sfx();
         ALGO.input.resetAudioButton();
         ALGO.load.setBG(algo);
+        ALGO.input.setInputs();
         ALGO.card.show(ALGO.mainPanel, "8");
 
         new java.util.Timer().schedule(new java.util.TimerTask() {
