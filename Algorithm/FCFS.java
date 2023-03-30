@@ -29,6 +29,7 @@ public class FCFS {
         .sorted(Comparator.comparingInt(i -> processes.get(i).getArrivalTime()))
         .map(i-> processes.get(i))
         .collect(Collectors.toCollection(ArrayList::new));
+        String res = this.simulate();
     }
 
     public String simulate() {
