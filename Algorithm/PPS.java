@@ -10,6 +10,7 @@ public class PPS {
     private int[] arrivalTimes;
     private int[] burstTimes;
     private int[] priorities;
+    private int[] startTimes;
     private int[] completionTimes;
     private int[] waitingTimes;
     private int[] turnaroundTimes;
@@ -22,12 +23,14 @@ public class PPS {
         this.arrivalTimes = arrivalTimes;
         this.burstTimes = burstTimes;
         this.priorities = priorities;
+        this.startTimes = new int[pids.length];
         this.completionTimes = new int[pids.length];
         this.waitingTimes = new int[pids.length];
         this.turnaroundTimes = new int[pids.length];
         this.averageWaitingTime = 0;
         this.averageTurnaroundTime = 0;
         this.ganttChart = new ArrayList<>();
+        schedule();
     }
 
     public void schedule() {
@@ -54,6 +57,7 @@ public class PPS {
                     completionTimes[highestPriorityProcess] = currentTime + 1;
                     turnaroundTimes[highestPriorityProcess] = completionTimes[highestPriorityProcess] - arrivalTimes[highestPriorityProcess];
                     waitingTimes[highestPriorityProcess] = turnaroundTimes[highestPriorityProcess] - burstTimes[highestPriorityProcess];
+                    startTimes[highestPriorityProcess] = waitingTimes[highestPriorityProcess] + arrivalTimes[highestPriorityProcess];
                     averageWaitingTime += waitingTimes[highestPriorityProcess];
                     averageTurnaroundTime += turnaroundTimes[highestPriorityProcess];
                 }
@@ -83,6 +87,10 @@ public class PPS {
 
     public int[] getCompletionTimes() {
         return completionTimes;
+    }
+
+    public int[] getStartTimes() {
+        return startTimes;
     }
 
     public int[] getWaitingTimes() {
@@ -142,8 +150,7 @@ public class PPS {
         int[] priorities = {4,3,2,1};
         int[] pids = IntStream.range(0,arrivals.length).toArray();
         PPS scheduler = new PPS(pids,arrivals,bursts,priorities);
- 
-        scheduler.schedule();;
+
         String ganttChart = scheduler.getGanttChart();
         System.out.println(ganttChart);
         for(int num : scheduler.getWaitingTimes()){
