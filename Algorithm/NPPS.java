@@ -1,59 +1,178 @@
 package Algorithm;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.Collections;
+import java.util.stream.IntStream;
+
+class Job {
+    private String name;
+    private int arrivalTime;
+    private int burstTime;
+    private int priority;
+    private int startTime;
+    private int finishTime;
+
+    public Job(String name, int arrivalTime, int burstTime, int priority) {
+        this.name = name;
+        this.arrivalTime = arrivalTime;
+        this.burstTime = burstTime;
+        this.priority = priority;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public int getBurstTime() {
+        return burstTime;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public int getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
+
+    public int getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(int finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    public int getWaitingTime() {
+        return startTime - arrivalTime;
+    }
+
+    public int getTurnaroundTime() {
+        return finishTime - arrivalTime;
+    }
+}
 
 public class NPPS {
-    private static class Process {
-        int processID;
-        int priority;
-        int burstTime;
-        int arrivalTime;
-        int completionTime;
-        int waitingTime;
-        
-        public Process(int processID, int priority, int burstTime, int arrivalTime) {
-            this.processID = processID;
-            this.priority = priority;
-            this.burstTime = burstTime;
-            this.arrivalTime = arrivalTime;
+    private ArrayList<Job> jobs = new ArrayList<>();
+
+    public void addJob(Job job) {
+        jobs.add(job);
+    }
+
+    public Boolean isEmpty(){
+        return jobs.isEmpty();
+    }
+
+    public void addJobs(int[] arrival, int[] burst, int[] priority){
+        for(int i = 0; i < arrival.length; i++){
+            addJob(new Job("J"+(i+1),arrival[i],burst[i],priority[i]));
         }
     }
-    
-    public static void main(String[] args) {
-        // Create a list of processes
-        List<Process> processes = new ArrayList<>();
-        processes.add(new Process(1, 2, 10, 0));
-        processes.add(new Process(2, 1, 5, 1));
-        processes.add(new Process(3, 3, 8, 2));
-        processes.add(new Process(4, 4, 3, 3));
-        
-        // Sort the list of processes by priority
-        processes.sort(Comparator.comparingInt(p -> p.priority));
-        
-        // Create a priority queue for processes
-        PriorityQueue<Process> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(p -> p.arrivalTime));
-        
-        // Add processes to the priority queue
-        for (Process process : processes) {
-            priorityQueue.add(process);
+
+    public int[] getArrivals(){
+        return IntStream.range(0, jobs.size()).boxed()
+            .mapToInt(i -> jobs.get(i).getArrivalTime()).toArray();
+    }
+
+    public int[] getWaitingTimes() {
+        int[] waitingTimes = new int[jobs.size()];
+
+        for (int i = 0; i < jobs.size(); i++) {
+            waitingTimes[i] = jobs.get(i).getWaitingTime();
         }
-        
-        // Process the processes in the priority queue
+
+        return waitingTimes;
+    }
+
+    public int[] getTurnaroundTimes() {
+        int[] turnaroundTimes = new int[jobs.size()];
+
+        for (int i = 0; i < jobs.size(); i++) {
+            turnaroundTimes[i] = jobs.get(i).getTurnaroundTime();
+        }
+
+        return turnaroundTimes;
+    }
+
+
+    public double getAverageWaitingTime(){
+        double sum = 0;
+        int[] nums = getWaitingTimes();
+        for(int i = 0; i < nums.length; i++){
+            sum += nums[i];
+        }
+        return (sum / jobs.size());
+    }
+
+    public double getAverageTurnaroundTime(){
+        int sum = 0;
+        int[] nums = getTurnaroundTimes();
+        for(int i = 0; i < nums.length; i++){
+            sum += nums[i];
+        }
+        return (sum / jobs.size());
+    }
+
+
+    public String generateGanttChart() {
+        StringBuilder chart = new StringBuilder();
         int currentTime = 0;
-        int totalWaitingTime = 0;
-        for (Process process : priorityQueue) {
-            process.waitingTime = currentTime - process.arrivalTime;
-            currentTime += process.burstTime;
-            process.completionTime = currentTime;
-            totalWaitingTime += process.waitingTime;
-            System.out.println("Processing process ID " + process.processID + " with priority " + process.priority 
-                                + ", burst time " + process.burstTime + ", arrival time " + process.arrivalTime 
-                                + ", completion time " + process.completionTime + ", waiting time " + process.waitingTime + ".");
+        ArrayList<Job> jobsCopy = new ArrayList<>(jobs);
+
+        while (!jobsCopy.isEmpty()) {
+            Job selectedJob = null;
+
+            for (Job job : jobsCopy) {
+                if (job.getArrivalTime() <= currentTime) {
+                    if (selectedJob == null || job.getPriority() < selectedJob.getPriority()) {
+                        selectedJob = job;
+                    }
+                }
+            }
+
+            if (selectedJob != null) {
+                jobsCopy.remove(selectedJob);
+                selectedJob.setStartTime(currentTime);
+                currentTime += selectedJob.getBurstTime();
+                selectedJob.setFinishTime(currentTime);
+                chart.append(selectedJob.getName());
+            } else {
+                chart.append("-");
+                currentTime++;
+            }
         }
-        double averageWaitingTime = (double) totalWaitingTime / processes.size();
-        System.out.println("Average waiting time: " + averageWaitingTime);
+
+        return chart.toString();
+    }
+
+    
+
+    public static void main(String[] args) {
+        NPPS scheduler = new NPPS();
+        int[] arrivals = {1,2,3,4};
+        int[] bursts = {1,2,3,4};
+        int[] priorities = {4,3,2,1}; 
+        scheduler.addJobs(arrivals, bursts, priorities);
+        String ganttChart = scheduler.generateGanttChart();
+        System.out.println(ganttChart);
+        System.out.println(scheduler.isEmpty());
+        for(int num : scheduler.getWaitingTimes()){
+            System.out.print(num + " ");
+        }
+        System.out.println();
+        for(int num : scheduler.getTurnaroundTimes()){
+            System.out.print(num+ " ");
+        }
+        System.out.println();
+        System.out.println(scheduler.getAverageWaitingTime());
+        System.out.println(scheduler.getAverageTurnaroundTime());
     }
 }
