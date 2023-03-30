@@ -1,6 +1,4 @@
-package Algorithm;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -8,38 +6,37 @@ import java.util.stream.IntStream;
 public class FCFS {
 
     private ArrayList<Process> processes;
-    private int[] arrivalTime;
-    private int[] burstTime;
+    private ArrayList<Integer> arrivalTime;
+    private ArrayList<Integer> burstTime;
     private int[] waitingTimes;
     private int[] turnaroundTimes;
     private int[] startTimes;
     private int[] endTimes;
     private int[] processIDs;
-    private double avgWaitingTime;
-    private double avgTurnaroundTime;
 
-    public FCFS(int[] arrivalTime, int[] burstTime) {
-        this.arrivalTime = arrivalTime;
-        this.burstTime = burstTime;
+    public FCFS(ArrayList<Integer> burstArray, ArrayList<Integer> arrivalArray) {
+        this.arrivalTime = burstArray;
+        this.burstTime = arrivalArray;
         this.processes = new ArrayList<>();
-        for (int i = 0; i < arrivalTime.length; i++) {
-            processes.add(new Process(i + 1, arrivalTime[i], burstTime[i]));
+        for (int i = 0; i < burstArray.size(); i++) {
+            processes.add(new Process(i + 1, burstArray.get(i), arrivalArray.get(i)));
         }
         // sort by arrival time
         this.processes = IntStream.range(0, processes.size()).boxed()
         .sorted(Comparator.comparingInt(i -> processes.get(i).getArrivalTime()))
         .map(i-> processes.get(i))
         .collect(Collectors.toCollection(ArrayList::new));
-        String res = this.simulate();
+
+        simulate();
         // sorted bursts
-        int[] burstCopy = burstTime.clone();
+        int[] burstCopy = burstTime.stream().mapToInt(Integer::intValue).toArray();
         burstTime = IntStream.range(0, arrivalTime.length).boxed()
             .sorted(Comparator.comparingInt(i -> arrivalTime[i]))
             .mapToInt(i -> burstCopy[i])
             .toArray();
         // sorted arrival times
         Arrays.sort(arrivalTime);
-        
+
     }
 
     public String simulate() {
@@ -68,8 +65,6 @@ public class FCFS {
         }
         double averageWaitingTime = waitingTime.stream().mapToInt(i -> i).average().orElse(0.0);
         double averageTurnaroundTime = turnaroundTime.stream().mapToInt(i -> i).average().orElse(0.0);
-        avgWaitingTime = averageWaitingTime;
-        avgTurnaroundTime = averageTurnaroundTime;
 
         waitingTimes = waitingTime.stream().mapToInt(Integer::intValue).toArray();
         turnaroundTimes = turnaroundTime.stream().mapToInt(Integer::intValue).toArray();
@@ -80,11 +75,11 @@ public class FCFS {
         return result;
     }
 
-    public int[] getArrivalTime() {
+    public ArrayList<Integer> getArrivalTime() {
         return arrivalTime;
     }
 
-    public int[] getBurstTime() {
+    public ArrayList<Integer> getBurstTime() {
         return burstTime;
     }
 
@@ -110,12 +105,6 @@ public class FCFS {
 
     public int[] getProcessIDs() {
         return processIDs;
-    }
-    public double getAvgWaitingTime() {
-        return avgWaitingTime;
-    }
-    public double getAvgTurnaroundTime() {
-        return avgTurnaroundTime;
     }
     // public static void main(String[] args) {
     //     int[] arrivalTime = {1,3,2};
