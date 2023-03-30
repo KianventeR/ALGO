@@ -94,7 +94,7 @@ public class FCFS {
         FCFS fifo = new FCFS(arrivalTime, burstTime);
         String result = fifo.simulate();
         System.out.println("Process Id");
-        for(int num : fifo.getWaitingTimes()){
+        for(int num : fifo.getProcessIDs()){
             System.out.print(num + " ");
         }
         System.out.println("\nWaiting Time");
