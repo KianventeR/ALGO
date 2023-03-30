@@ -117,34 +117,34 @@ public class FCFS {
     public double getAvgTurnaroundTime() {
         return avgTurnaroundTime;
     }
-    public static void main(String[] args) {
-        int[] arrivalTime = {1,3,2};
-        int[] burstTime = {1,2,3};
-        FCFS fifo = new FCFS(arrivalTime, burstTime);
-        String result = fifo.simulate();
-        System.out.println("Process Id");
-        for(int num : fifo.getProcessIDs()){
-            System.out.print(num + " ");
-        }
-        System.out.println("\nWaiting Time");
-        for(int num : fifo.getWaitingTimes()){
-            System.out.print(num + " ");
-        }
-        System.out.println("\nTurnaround Time");
-        for(int num : fifo.getTurnaroundTimes()){
-            System.out.print(num+ " ");
-        }
-        System.out.println("\nStarting Time");
-        for(int num : fifo.getStartTimes()){
-            System.out.print(num + " ");
-        }
-        System.out.println("\nEnding Time");
-        for(int num : fifo.getEndTimes()){
-            System.out.print(num+ " ");
-        }
-        System.out.println();
-        System.out.println(result);
-    }
+    // public static void main(String[] args) {
+    //     int[] arrivalTime = {1,3,2};
+    //     int[] burstTime = {1,2,3};
+    //     fcfs fifo = new fcfs(arrivalTime, burstTime);
+    //     String result = fifo.simulate();
+    //     System.out.println("Process Id");
+    //     for(int num : fifo.getProcessIDs()){
+    //         System.out.print(num + " ");
+    //     }
+    //     System.out.println("\nWaiting Time");
+    //     for(int num : fifo.getWaitingTimes()){
+    //         System.out.print(num + " ");
+    //     }
+    //     System.out.println("\nTurnaround Time");
+    //     for(int num : fifo.getTurnaroundTimes()){
+    //         System.out.print(num+ " ");
+    //     }
+    //     System.out.println("\nStarting Time");
+    //     for(int num : fifo.getStartTimes()){
+    //         System.out.print(num + " ");
+    //     }
+    //     System.out.println("\nEnding Time");
+    //     for(int num : fifo.getEndTimes()){
+    //         System.out.print(num+ " ");
+    //     }
+    //     System.out.println();
+    //     System.out.println(result);
+    // }
 }
 
 class Process {
