@@ -115,6 +115,12 @@ public class FCFS {
     public int[] getProcessIDs() {
         return processIDs;
     }
+    public double getAvgTurnaroundTime() {
+        return avgTurnaroundTime;
+    }
+    public double getAvgWaitingTime() {
+        return avgWaitingTime;
+    }
     // public static void main(String[] args) {
     //     int[] arrivalTime = {1,3,2};
     //     int[] burstTime = {1,2,3};
