@@ -3,6 +3,7 @@ package Algorithm;
 import java.util.stream.IntStream;
 
 public class SJF {
+    private int[] processIds;
     private int[] arrivalTime;
     private int[] burstTime;
     private int numProcesses;
@@ -54,6 +55,10 @@ public class SJF {
         return startTimes;
     }
 
+    public int[] getProcessIds() {
+        return processIds;
+    }
+
     public double getAverageTurnaroundTime() {
         return averageTurnaroundTime;
     }
@@ -95,7 +100,9 @@ public class SJF {
         int[] turnaroundTime = new int[numProcesses];
         int[] waitingTime = new int[numProcesses];
         int[] startTime = new int[numProcesses];
+        int[] pids = new int[numProcesses];
         for (int i = 0; i < numProcesses; i++) {
+            pids[i] = i;
             turnaroundTime[i] = completionTimes[i] - arrivalTime[i];
             waitingTime[i] = turnaroundTime[i] - burstTime[i];
             startTime[i] = waitingTime[i] + arrivalTime[i];
@@ -103,6 +110,7 @@ public class SJF {
         this.turnaroundTimes = turnaroundTime;
         this.waitingTimes = waitingTime;
         this.startTimes = startTime;
+        this.processIds = pids;
         averageWaitingTime = IntStream.range(0,waitingTimes.length).boxed()
             .mapToInt(i -> waitingTimes[i]).average().orElse(0.0);
         averageTurnaroundTime = IntStream.range(0,turnaroundTimes.length).boxed()
