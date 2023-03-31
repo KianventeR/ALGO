@@ -4,10 +4,6 @@ public class Results extends javax.swing.JPanel {
     public Results() {
         initComponents();
     }
-    public void reset() {
-        removeAll();
-        initComponents();
-    }
     private void initComponents() {
        
        
@@ -132,7 +128,7 @@ public class Results extends javax.swing.JPanel {
         });
         add(results_menu);
         results_menu.setBounds(510, 630, 210, 50);
-
+   
         results_return.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/window/return.png"))); 
         results_return.setBorder(null);
         results_return.setBorderPainted(false);
@@ -155,6 +151,7 @@ public class Results extends javax.swing.JPanel {
         
         results_return.setBounds(1180, 620, 70, 70);
         results_table.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); 
+        results_table.setFocusable(false);
         results_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 
@@ -162,27 +159,35 @@ public class Results extends javax.swing.JPanel {
             new String [] {
                 "", "", "", "", "", "", "", ""
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
 
-        
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        results_table.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(results_table);
         if (results_table.getColumnModel().getColumnCount() > 0) {
             results_table.getColumnModel().getColumn(0).setResizable(false);
             results_table.getColumnModel().getColumn(0).setPreferredWidth(10);
             results_table.getColumnModel().getColumn(1).setResizable(false);
-            results_table.getColumnModel().getColumn(1).setPreferredWidth(80);
+            results_table.getColumnModel().getColumn(1).setPreferredWidth(60);
             results_table.getColumnModel().getColumn(2).setResizable(false);
-            results_table.getColumnModel().getColumn(2).setPreferredWidth(90);
+            results_table.getColumnModel().getColumn(2).setPreferredWidth(70);
             results_table.getColumnModel().getColumn(3).setResizable(false);
-            results_table.getColumnModel().getColumn(3).setPreferredWidth(80);
+            results_table.getColumnModel().getColumn(3).setPreferredWidth(60);
             results_table.getColumnModel().getColumn(4).setResizable(false);
-            results_table.getColumnModel().getColumn(4).setPreferredWidth(80);
+            results_table.getColumnModel().getColumn(4).setPreferredWidth(70);
             results_table.getColumnModel().getColumn(5).setResizable(false);
             results_table.getColumnModel().getColumn(5).setPreferredWidth(80);
             results_table.getColumnModel().getColumn(6).setResizable(false);
-            results_table.getColumnModel().getColumn(6).setPreferredWidth(80);
+            results_table.getColumnModel().getColumn(6).setPreferredWidth(90);
             results_table.getColumnModel().getColumn(7).setResizable(false);
-            results_table.getColumnModel().getColumn(7).setPreferredWidth(80);
+            results_table.getColumnModel().getColumn(7).setPreferredWidth(110);
+            results_table.setFocusable(false);
         }
        
       
@@ -245,6 +250,7 @@ public class Results extends javax.swing.JPanel {
         ALGO.card.show(ALGO.mainPanel, "6");
         DefaultTableModel model = (DefaultTableModel) results_table.getModel();
         model.setRowCount(0);
+
     }
 
     private void results_menuMouseEntered(java.awt.event.MouseEvent evt) {
@@ -256,8 +262,12 @@ public class Results extends javax.swing.JPanel {
     }
  
     private void results_menuActionPerformed(java.awt.event.ActionEvent evt) {
+        Music.sfx();
         ALGO.menu.resetAudioButton();
+        ALGO.input.setInputs();
         ALGO.card.show(ALGO.mainPanel, "1");
+        DefaultTableModel model = (DefaultTableModel) results_table.getModel();
+        model.setRowCount(0);
     }
 
     private void exitMouseEntered(java.awt.event.MouseEvent evt) {

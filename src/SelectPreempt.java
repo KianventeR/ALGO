@@ -215,10 +215,19 @@ public class SelectPreempt extends javax.swing.JPanel {
             ALGO.select.algo_setter("prio-np");  
         }else {
             ALGO.select.algo_setter("sjf-np");  
-        }                                          
+        }             
         Music.sfx();
+        ALGO.input.resetAudioButton();
+        ALGO.load.setBG(ALGO.select.algo);
         ALGO.input.setInputs();
-        ALGO.card.show(ALGO.mainPanel, "6");
+        ALGO.card.show(ALGO.mainPanel, "8");
+
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                ALGO.card.show(ALGO.mainPanel, "6");
+            }
+        }, 2 * 1000); // Miliseconds
     }                                                  
 
     private void select_preemptPMouseEntered(java.awt.event.MouseEvent evt) {                
@@ -236,8 +245,17 @@ public class SelectPreempt extends javax.swing.JPanel {
             ALGO.select.algo_setter("sjf-p");  
         }                                               
         Music.sfx();
+        ALGO.input.resetAudioButton();
+        ALGO.load.setBG(ALGO.select.algo);
         ALGO.input.setInputs();
-        ALGO.card.show(ALGO.mainPanel, "6");
+        ALGO.card.show(ALGO.mainPanel, "8");
+
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                ALGO.card.show(ALGO.mainPanel, "6");
+            }
+        }, 2 * 1000); // Miliseconds
     }                                               
 
     private void select_volMouseEntered(java.awt.event.MouseEvent evt) {                                        
