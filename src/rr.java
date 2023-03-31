@@ -101,7 +101,7 @@ public class rr {
         
         arrivals = sorted_arrivals;
         waitingTimes = IntStream.range(0, arrivals.length).boxed()
-            .mapToInt(i->turnaroundTimes[i]-sorted_bursts[i])
+            .mapToInt(i->turnaroundTimes[i]-bursts[i])
             .toArray();
         
         averageWaitingTime = IntStream.range(0,waitingTimes.length).boxed()
