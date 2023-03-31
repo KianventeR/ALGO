@@ -152,23 +152,25 @@ public class pps {
         sb.append("\n");
         return sb.toString();
     }
-    // public static void main(String[] args) {
-    //     int[] arrivals = {1,2,3,4};
-    //     int[] bursts = {1,2,3,4};
-    //     int[] priorities = {4,3,2,1};
-    //     int[] pids = IntStream.range(0,arrivals.length).toArray();
-    //     pps scheduler = new pps(pids,arrivals,bursts,priorities);
-    //     String ganttChart = scheduler.getGanttChart();
-    //     System.out.println(ganttChart);
-    //     for(int num : scheduler.getWaitingTimes()){
-    //         System.out.print(num + " WT ");
-    //     }
-    //     System.out.println();
-    //     for(int num : scheduler.getTurnaroundTimes()){
-    //         System.out.print(num+ " TT ");
-    //     }
-    //     System.out.println();
-    //     System.out.println(scheduler.getAverageWaitingTime());
-    //     System.out.println(scheduler.getAverageTurnaroundTime());
-    // }
+    /*public static void main(String[] args) {
+        int[] arrivals = {1,2,3,4};
+        int[] bursts = {1,2,3,4};
+        int[] priorities = {4,3,2,1};
+        int[] pids = IntStream.range(0,arrivals.length).toArray();
+        PPS scheduler = new PPS(pids,arrivals,bursts,priorities);
+
+        String ganttChart = scheduler.getGanttChart();
+        System.out.println(ganttChart);
+        for(int num : scheduler.getWaitingTimes()){
+            System.out.print(num + " ");
+        }
+        System.out.println();
+        for(int num : scheduler.getTurnaroundTimes()){
+            System.out.print(num+ " ");
+        }
+        System.out.println();
+        System.out.println(scheduler.getAverageWaitingTime());
+        System.out.println(scheduler.getAverageTurnaroundTime());
+    }*/
 }
+    
