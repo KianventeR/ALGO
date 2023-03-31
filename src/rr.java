@@ -90,7 +90,7 @@ public class rr {
         endTimes = ends.stream().mapToInt(Integer::intValue).toArray();
         // generate turnaround values
         turnaroundTimes = IntStream.range(0, arrivals.length).boxed()
-            .mapToInt(i -> endTimes[i]-arrivals[i])
+            .mapToInt(i -> completions[i]-arrivals[i])
             .toArray();
         //sort turnaround by arrival
         turnaroundTimes = IntStream.range(0, arrivals.length).boxed()
