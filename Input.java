@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 import javax.swing.JOptionPane;
 
@@ -622,14 +623,18 @@ public class Input extends javax.swing.JPanel {
                 for(int i = 0; i < burstArray.size(); i++){
                    
                               // "ID", "Burst Time", "Arrival Time", "Priority", "Waiting Time", "Turnaround Time", "Avg Waiting Time", "Avg Turnaround Time"
-                    int id, burst, arrival, waiting, turnaround, avg_wait, avg_turn;
+                    int id, burst, arrival, waiting, turnaround;
+                    double avg_wait, avg_turn;
                     id = fcfs.getProcessIDs()[i];
                     burst = burstArray.get(i);
                     arrival = arrivalArray.get(i);
                     waiting = (fcfs.getEndTimes()[i] - arrivalArray.get(i)) - burstArray.get(i);
                     turnaround = fcfs.getEndTimes()[i] - arrivalArray.get(i);
-                Object[] row = { "P"+ (id + 1), burst, arrival, "-", waiting, turnaround, "-", "-"};
-                model2.addRow(row);
+                    avg_wait = fcfs.getAvgWaitingTime();
+                    avg_turn = fcfs.getAvgTurnaroundTime();
+
+                    Object[] row = { "P"+ (id + 1), burst, arrival, "-", waiting, turnaround, "-", "-"};
+                    model2.addRow(row);
                 }
                 int waiting = 0;
                 int turnaround = 0;
@@ -651,7 +656,24 @@ public class Input extends javax.swing.JPanel {
 
         }
         else if(algo == "rr"){
-            
+            int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();
+            int[] aarray = arrivalArray.stream().mapToInt(Integer::intValue).toArray();
+            rr rr = new rr(barray, aarray, quantum);
+            System.out.println(rr);
+            javax.swing.table.DefaultTableModel model2 = (javax.swing.table.DefaultTableModel)Results.results_table.getModel();
+            int[] bursts = rr.getBursts();
+            int[] pids = rr.getProcessIDUniques();
+            int[] arrivals = rr.getArrivals();
+            int[] waits = rr.getWaitingTimes();
+            int[] turns = rr.getTurnaroundTimes();
+            for(int i = 0; i < pids.length; i++){
+                Object[] row = { "P"+ (pids[i] + 1), bursts[i], arrivals[i], "-", waits[i], turns[i], "-", "-"};
+                model2.addRow(row);
+            }
+            double avgWait = rr.getAverageWaitingTime();
+            double avgTurn = rr.getAverageTurnaroundTime();
+            Object[] row2 = { "", "", "", "", "", "", avgWait, avgTurn};
+            model2.addRow(row2);
         }
         else if(algo == "prio-np"){
             
