@@ -93,10 +93,10 @@ public class rr {
             .mapToInt(i -> completions[i]-arrivals[i])
             .toArray();
         // sort turnaround by arrival
-        turnaroundTimes = IntStream.range(0, arrivals.length).boxed()
-            .sorted(Comparator.comparingInt(i -> arrivals[i]))
-            .mapToInt(i -> turnaroundTimes[i])
-            .toArray();
+        //turnaroundTimes = IntStream.range(0, arrivals.length).boxed()
+        //    .sorted(Comparator.comparingInt(i -> arrivals[i]))
+        //    .mapToInt(i -> turnaroundTimes[i])
+        //    .toArray();
         
         arrivals = sorted_arrivals;
         waitingTimes = IntStream.range(0, arrivals.length).boxed()
