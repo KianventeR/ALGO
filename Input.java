@@ -658,22 +658,29 @@ public class Input extends javax.swing.JPanel {
         else if(algo == "rr"){
             int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();
             int[] aarray = arrivalArray.stream().mapToInt(Integer::intValue).toArray();
-            rr rr = new rr(barray, aarray, quantum);
-            System.out.println(rr);
-            javax.swing.table.DefaultTableModel model2 = (javax.swing.table.DefaultTableModel)Results.results_table.getModel();
-            int[] bursts = rr.getBursts();
-            int[] pids = rr.getProcessIDUniques();
-            int[] arrivals = rr.getArrivals();
-            int[] waits = rr.getWaitingTimes();
-            int[] turns = rr.getTurnaroundTimes();
-            for(int i = 0; i < pids.length; i++){
-                Object[] row = { "P"+ (pids[i] + 1), bursts[i], arrivals[i], "-", waits[i], turns[i], "-", "-"};
-                model2.addRow(row);
+            try{
+                rr rr = new rr(barray, aarray, quantum);
+                System.out.println(rr);
+                javax.swing.table.DefaultTableModel model2 = (javax.swing.table.DefaultTableModel)Results.results_table.getModel();
+                int[] bursts = rr.getBursts();
+                int[] pids = rr.getProcessIDUniques();
+                int[] arrivals = rr.getArrivals();
+                int[] waits = rr.getWaitingTimes();
+                int[] turns = rr.getTurnaroundTimes();
+            
+                for(int i = 0; i < pids.length; i++){
+                    Object[] row = { "P"+ (pids[i] + 1), bursts[i], arrivals[i], "-", waits[i], turns[i], "-", "-"};
+                    model2.addRow(row);
+                }
+
+                double avgWait = rr.getAverageWaitingTime();
+                double avgTurn = rr.getAverageTurnaroundTime();
+                Object[] row2 = { "", "", "", "", "", "", avgWait, avgTurn};
+                model2.addRow(row2);
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            double avgWait = rr.getAverageWaitingTime();
-            double avgTurn = rr.getAverageTurnaroundTime();
-            Object[] row2 = { "", "", "", "", "", "", avgWait, avgTurn};
-            model2.addRow(row2);
+            
         }
         else if(algo == "prio-np"){
             
@@ -682,7 +689,30 @@ public class Input extends javax.swing.JPanel {
 
         }
         else if(algo == "sjf-np"){
+            int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();
+            int[] aarray = arrivalArray.stream().mapToInt(Integer::intValue).toArray();
+            try{
+                sjf sjf = new sjf(barray, aarray, barray.length);
+                System.out.println(sjf);
+                javax.swing.table.DefaultTableModel model2 = (javax.swing.table.DefaultTableModel)Results.results_table.getModel();
+                int[] bursts = sjf.getBurstTime();
+                int[] pids = sjf.getProcessIds();
+                int[] arrivals = sjf.getArrivalTime();
+                int[] waits = sjf.getWaitingTimes();
+                int[] turns = sjf.getTurnaroundTimes();
             
+                for(int i = 0; i < pids.length; i++){
+                    Object[] row = { "P"+ (pids[i] + 1), bursts[i], arrivals[i], "-", waits[i], turns[i], "-", "-"};
+                    model2.addRow(row);
+                }
+
+                double avgWait = sjf.getAverageWaitingTime();
+                double avgTurn = sjf.getAverageTurnaroundTime();
+                Object[] row2 = { "", "", "", "", "", "", avgWait, avgTurn};
+                model2.addRow(row2);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         else if(algo == "sjf-p"){
 
