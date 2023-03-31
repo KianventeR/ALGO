@@ -68,6 +68,7 @@ public class npps {
     public npps(int[] burst, int[] arrival, int[] priority){
         this.jobs = new ArrayList<>();
         addJobs(arrival, burst, priority);
+        String res = generateGanttChart();
     }
 
     public void addJob(Job job) {
@@ -174,6 +175,7 @@ public class npps {
         StringBuilder chart = new StringBuilder();
         int currentTime = 0;
         ArrayList<Job> jobsCopy = new ArrayList<>(jobs);
+        ArrayList<Job> jobsSaved = new ArrayList<>();
 
         while (!jobsCopy.isEmpty()) {
             Job selectedJob = null;
@@ -192,12 +194,13 @@ public class npps {
                 currentTime += selectedJob.getBurstTime();
                 selectedJob.setFinishTime(currentTime);
                 chart.append(selectedJob.getName());
+                jobsSaved.add(selectedJob);
             } else {
                 chart.append("-");
                 currentTime++;
             }
         }
-
+        jobs = jobsSaved;
         return chart.toString();
     }
 
