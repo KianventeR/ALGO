@@ -507,8 +507,8 @@ public class Input extends javax.swing.JPanel {
 
     public void input_to_rr(int pid, int burst, int arrival, int quantum){
         pidArray.add(pid);
-        arrivalArray.add(burst);
-        burstArray.add(arrival);
+        arrivalArray.add(arrival);
+        burstArray.add(burst);
         quant_main = quantum;
     }
 
