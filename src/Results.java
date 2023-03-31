@@ -4,6 +4,11 @@ public class Results extends javax.swing.JPanel {
     public Results() {
         initComponents();
     }
+    public void reset() {
+        ALGO.input.prioArray.clear();
+        ALGO.input.quantum = 0;
+        ALGO.input.count = 1;
+    }
     private void initComponents() {
        
        
@@ -244,6 +249,7 @@ public class Results extends javax.swing.JPanel {
     }
 
     private void results_returnActionPerformed(java.awt.event.ActionEvent evt) {     
+        reset();
         Music.sfx();
         ALGO.select.resetAudioButton(); 
         ALGO.input.setInputs();
@@ -265,6 +271,7 @@ public class Results extends javax.swing.JPanel {
         Music.sfx();
         ALGO.menu.resetAudioButton();
         ALGO.input.setInputs();
+        reset();
         ALGO.card.show(ALGO.mainPanel, "1");
         DefaultTableModel model = (DefaultTableModel) results_table.getModel();
         model.setRowCount(0);

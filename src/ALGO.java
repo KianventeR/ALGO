@@ -22,7 +22,7 @@ public class ALGO extends javax.swing.JFrame {
         mainFrame.setSize(1280, 720);
         mainFrame.setTitle("Terminated");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setUndecorated(true);
+        mainFrame.setUndecorated(false);
         
         mainPanel.setLayout(card);
         mainPanel.add(menu, "1");
@@ -56,6 +56,15 @@ public class ALGO extends javax.swing.JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 new ALGO();
+
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                        | UnsupportedLookAndFeelException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                
             }
         });
     }

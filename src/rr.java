@@ -1,4 +1,3 @@
-package src;
 import java.util.stream.IntStream;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -101,7 +100,7 @@ public class rr {
         
         arrivals = sorted_arrivals;
         waitingTimes = IntStream.range(0, arrivals.length).boxed()
-            .mapToInt(i->turnaroundTimes[i]-sorted_bursts[i])
+            .mapToInt(i->turnaroundTimes[i]-bursts[i])
             .toArray();
         
         averageWaitingTime = IntStream.range(0,waitingTimes.length).boxed()
@@ -169,12 +168,10 @@ public class rr {
     }
 
     /*public static void main(String[] args){
-
         int[] bursts = {1,2,3};
         int[] arrivals = {1,1,1};
         int time_slice = 1;
         rr test_rr = new RR(bursts, arrivals, time_slice);
-
         System.out.println(test_rr.toString());
         
     }*/

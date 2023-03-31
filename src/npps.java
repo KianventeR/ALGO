@@ -1,4 +1,3 @@
-package src;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.IntStream;
@@ -22,7 +21,7 @@ class Job {
         return id;
     }
     public int getId() {
-        return Integer.parseInt(this.id.replace("P", ""));
+        return Integer.parseInt(this.id.replace("J", ""));
     }
 
     public int getArrivalTime() {
@@ -63,7 +62,12 @@ class Job {
 }
 
 public class npps {
-    private ArrayList<Job> jobs = new ArrayList<>();
+    private ArrayList<Job> jobs;
+
+    public npps(int[] burst, int[] arrival, int[] priority){
+        this.jobs = new ArrayList<>();
+        addJobs(arrival, burst, priority);
+    }
 
     public void addJob(Job job) {
         jobs.add(job);

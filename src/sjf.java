@@ -1,4 +1,4 @@
-package src;
+
 import java.util.stream.IntStream;
 
 public class sjf {
