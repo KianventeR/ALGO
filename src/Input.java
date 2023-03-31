@@ -601,16 +601,14 @@ public class Input extends javax.swing.JPanel {
     }                                        
     
     private void input_randomActionPerformed(java.awt.event.ActionEvent evt) {   
-        int upperbound, upperbound_q, lowerbound, seed;
+        int upperbound, lowerbound, seed;
         upperbound = 30;
-        upperbound_q = 10;
         lowerbound = 1;   
         seed = (int) System.currentTimeMillis();
         Random rand = new Random(seed);
         int random_arrival = rand.nextInt(upperbound-lowerbound) + lowerbound;         
         int random_burst = rand.nextInt(upperbound-lowerbound) + lowerbound;
         int random_prio = rand.nextInt(upperbound-lowerbound) + lowerbound;
-        int random_quant = rand.nextInt(upperbound_q) + lowerbound;
         
         input_burstIn.setText(String.valueOf(random_burst));
         input_arrivalIn.setText(String.valueOf(random_arrival));
@@ -620,10 +618,7 @@ public class Input extends javax.swing.JPanel {
         // System.out.println(random_prio + "prio");
 
         Music.sfx();
-        if(ALGO.select.algo == "rr"){
-            input_quantumIn.setText(String.valueOf(random_quant));
-        }
-        else if(ALGO.select.algo == "prio-np"){
+        if(ALGO.select.algo == "prio-np"){
             input_prioIn.setText(String.valueOf(random_prio));
         }
         else if(ALGO.select.algo == "prio-p"){
