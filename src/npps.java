@@ -22,7 +22,7 @@ class Job {
         return id;
     }
     public int getId() {
-        return Integer.parseInt(this.id.replace("P", ""));
+        return Integer.parseInt(this.id.replace("J", ""));
     }
 
     public int getArrivalTime() {
