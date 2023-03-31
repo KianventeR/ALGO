@@ -63,7 +63,12 @@ class Job {
 }
 
 public class npps {
-    private ArrayList<Job> jobs = new ArrayList<>();
+    private ArrayList<Job> jobs;
+
+    public npps(int[] burst, int[] arrival, int[] priority){
+        this.jobs = new ArrayList<>();
+        addJobs(arrival, burst, priority);
+    }
 
     public void addJob(Job job) {
         jobs.add(job);
