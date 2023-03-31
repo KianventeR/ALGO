@@ -1,114 +1,192 @@
-
-import java.util.stream.IntStream;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class fcfs{
-    // this class would return the 
-    // the names of the processes
-    // and the end time usage of each process
-    
-    // FCFS uses a queue to run each process
-    // but the processes must be sorted by arrival times
-    private Integer[] bursts;
-    private Integer[] arrivals;
-    private int[] processIDs;
-    private int[] endTimes;
+public class fcfs {
+
+    private ArrayList<Process> processes;
+    private ArrayList<Integer> arrivalTime;
+    private ArrayList<Integer> burstTime;
     private int[] waitingTimes;
+    private int[] turnaroundTimes;
+    private int[] startTimes;
+    private int[] endTimes;
+    private int[] processIDs;
+    private double avgWaitingTime;
+    private double avgTurnaroundTime;
 
-    public fcfs(ArrayList<Integer> burstArray, ArrayList<Integer> arrivalArray){
-        bursts = burstArray.toArray(new Integer[0]);
-        arrivals = arrivalArray.toArray(new Integer[0]);
-
-        // sort burst array by arrival time
-        final int[] sorted_bursts = IntStream.range(0, arrivals.length).boxed()
-            .sorted(Comparator.comparingInt(i -> arrivals[i]))
-            .mapToInt(i -> bursts[i])
-            .toArray();
-
-        final Integer[] sorted_arrivals = arrivals.clone();
-        Arrays.sort(sorted_arrivals);
-
-        final int[] sorted_pids = IntStream.range(0, arrivals.length).boxed()
-            .sorted(Comparator.comparingInt(i -> arrivals[i]))
-            .mapToInt(Integer::intValue)
-            .toArray();
-        // print the process, evaluate turnaround
-        // by equation : turnaround = burst - arrival + waiting
-        int time = 0;
-        ArrayList<Integer> turnarounds = new ArrayList<Integer>(); 
-        ArrayList<Integer> waitings = new ArrayList<Integer>();
-
-        for(int i = 0; i < sorted_bursts.length; i++){
-            if(time >= sorted_arrivals[i]){
-                waitings.add(time-sorted_arrivals[i]);
-            }else{
-                waitings.add(sorted_arrivals[i]-time);
-            }
-            if(time < sorted_arrivals[i]){
-                turnarounds.add(sorted_bursts[i]+sorted_arrivals[i]);
-                time = sorted_bursts[i]+sorted_arrivals[i];
-            }
-            else{
-                turnarounds.add(sorted_bursts[i]+time);
-                time += sorted_bursts[i];
-            }
+    public fcfs(ArrayList<Integer> arrivalArray, ArrayList<Integer> burstArray) {
+        this.arrivalTime = arrivalArray;
+        this.burstTime = burstArray;
+        this.processes = new ArrayList<>();
+        for (int i = 0; i < burstArray.size(); i++) {
+            processes.add(new Process(i + 1, burstArray.get(i), arrivalArray.get(i)));
         }
-        waitingTimes = waitings.stream().mapToInt(Integer::intValue).toArray();
-        processIDs = sorted_pids;
-        arrivals = sorted_arrivals;
-        endTimes = turnarounds.stream().mapToInt(Integer::intValue).toArray();
+        // sort by arrival time
+        this.processes = IntStream.range(0, processes.size()).boxed()
+        .sorted(Comparator.comparingInt(i -> processes.get(i).getArrivalTime()))
+        .map(i-> processes.get(i))
+        .collect(Collectors.toCollection(ArrayList::new));
+
+        simulate();
+        // sorted bursts
+        burstTime = IntStream.range(0, arrivalTime.size()).boxed()
+            .map(i -> processes.get(i).getBurstTime())
+            .collect(Collectors.toCollection(ArrayList::new));
+        // sorted arrival
+        arrivalTime = IntStream.range(0, arrivalTime.size()).boxed()
+            .map(i -> processes.get(i).getArrivalTime())
+            .collect(Collectors.toCollection(ArrayList::new));
+        // sorted process ids
+        processIDs = IntStream.range(0, arrivalTime.size()).boxed()
+            .mapToInt(i -> processes.get(i).getId())
+            .toArray();
     }
 
-    // same for average turnaround time
-    public int[] getEndTimes(){
+    public String simulate() {
+        ArrayList<Integer> waitingTime = new ArrayList<>();
+        ArrayList<Integer> turnaroundTime = new ArrayList<>();
+        ArrayList<Integer> starts = new ArrayList<>();
+        ArrayList<Integer> ends = new ArrayList<>();
+        ArrayList<Integer> pids = new ArrayList<>();
+
+        int currentTime = 0;
+        String ganttChart = "";
+        for (Process p : processes) {
+            if (p.getArrivalTime() > currentTime) {
+                currentTime = p.getArrivalTime();
+            }
+            p.setStartTime(currentTime);
+            ganttChart += "P" + p.getId() + " ";
+            currentTime += p.getBurstTime();
+            p.setEndTime(currentTime);
+
+            pids.add(p.getId());
+            starts.add(p.getStartTime());
+            ends.add(p.getEndTime());
+            waitingTime.add(p.getStartTime() - p.getArrivalTime());
+            turnaroundTime.add(p.getEndTime() - p.getArrivalTime());
+        }
+        double averageWaitingTime = waitingTime.stream().mapToInt(i -> i).average().orElse(0.0);
+        double averageTurnaroundTime = turnaroundTime.stream().mapToInt(i -> i).average().orElse(0.0);
+        avgWaitingTime = averageWaitingTime;
+        avgTurnaroundTime = averageTurnaroundTime;
+
+        waitingTimes = waitingTime.stream().mapToInt(Integer::intValue).toArray();
+        turnaroundTimes = turnaroundTime.stream().mapToInt(Integer::intValue).toArray();
+        startTimes = starts.stream().mapToInt(Integer::intValue).toArray();
+        endTimes = ends.stream().mapToInt(Integer::intValue).toArray();
+        processIDs = pids.stream().mapToInt(Integer::intValue).toArray();
+        String result = "Average Waiting Time: " + averageWaitingTime + "\nAverage Turnaround Time: " + averageTurnaroundTime + "\nGantt Chart: " + ganttChart;
+        return result;
+    }
+
+    public ArrayList<Integer> getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public ArrayList<Integer> getBurstTime() {
+        return burstTime;
+    }
+
+    public ArrayList<Process> getProcesses() {
+        return processes;
+    }
+
+    public int[] getWaitingTimes() {
+        return waitingTimes;
+    }
+
+    public int[] getTurnaroundTimes() {
+        return turnaroundTimes;
+    }
+
+    public int[] getStartTimes() {
+        return startTimes;
+    }
+    
+    public int[] getEndTimes() {
         return endTimes;
-    }
-
-    public Integer[] getArrivals() {
-        return arrivals;
     }
 
     public int[] getProcessIDs() {
         return processIDs;
     }
-    // same for average waiting time
-    public int[] getWaitingTimes() {
-        return waitingTimes;
+    public double getAvgTurnaroundTime() {
+        return avgTurnaroundTime;
     }
-
-    // Character User Interface for testing in console
-    public String toString(){
-        final int[] turns = this.getEndTimes();
-        final int[] pids = this.getProcessIDs();
-        final Integer[] starts = this.getArrivals();
-        final int[] waits = this.getWaitingTimes();
-        final String result = IntStream.range(0, turns.length).boxed()
-            .map(i -> "Process " + (pids[i]+1) + ": start->" + starts[i] + " ends->" + turns[i] + " waits->" + waits[i] +"\n")
-            .reduce("",String::concat);
-        return result;
+    public double getAvgWaitingTime() {
+        return avgWaitingTime;
     }
-
-    // public static void main(String[] args){
-
-    //     int[] bursts = {10,20,30,40,50};
-    //     int[] arrivals = {3,12,5,2,7};
-    //     fcfs test_fcfs = new fcfs(bursts, arrivals);
-
-    //     System.out.println(test_fcfs.toString());
-        
-    //     // Example use for IntStream
-    //     //int[] strings = {"string1", "string2", "string3"};
-    //     //int[] boosts = {40, 32, 34};
-
-    //     //String[] sorted = IntStream.range(0, boosts.length).boxed()
-    //      //   .sorted(Comparator.comparingInt(i -> boosts[i]))
-    //      //   .map(i -> strings[i])
-    //      //   .toArray(String[]::new);
-
-    //     //for(int i = 0; i < sorted.length; i++){
-    //     //}
+    // public static void main(String[] args) {
+    //     int[] arrivalTime = {1,3,2};
+    //     int[] burstTime = {1,2,3};
+    //     fcfs fifo = new fcfs(arrivalTime, burstTime);
+    //     String result = fifo.simulate();
+    //     System.out.println("Process Id");
+    //     for(int num : fifo.getProcessIDs()){
+    //         System.out.print(num + " ");
+    //     }
+    //     System.out.println("\nWaiting Time");
+    //     for(int num : fifo.getWaitingTimes()){
+    //         System.out.print(num + " ");
+    //     }
+    //     System.out.println("\nTurnaround Time");
+    //     for(int num : fifo.getTurnaroundTimes()){
+    //         System.out.print(num+ " ");
+    //     }
+    //     System.out.println("\nStarting Time");
+    //     for(int num : fifo.getStartTimes()){
+    //         System.out.print(num + " ");
+    //     }
+    //     System.out.println("\nEnding Time");
+    //     for(int num : fifo.getEndTimes()){
+    //         System.out.print(num+ " ");
+    //     }
+    //     System.out.println();
+    //     System.out.println(result);
     // }
+}
 
+class Process {
+    private int id;
+    private int arrivalTime;
+    private int burstTime;
+    private int startTime;
+    private int endTime;
+
+    public Process(int id, int arrivalTime, int burstTime) {
+        this.id = id;
+        this.arrivalTime = arrivalTime;
+        this.burstTime = burstTime;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public int getBurstTime() {
+        return burstTime;
+    }
+
+    public int getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
+
+    public int getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(int endTime) {
+        this.endTime = endTime;
+    }
 }
