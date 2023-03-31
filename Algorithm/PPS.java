@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 public class PPS {
     private int[] processIds;
+    private int[] processIDUniques;
     private int[] arrivalTimes;
     private int[] burstTimes;
     private int[] priorities;
@@ -35,6 +36,7 @@ public class PPS {
 
     public void schedule() {
         int[] remainingBurstTimes = Arrays.copyOf(burstTimes, burstTimes.length);
+        ArrayList<Integer> highPrioProcesses = new ArrayList<>();
         int currentTime = 0;
         int completed = 0;
         boolean[] isCompleted = new boolean[processIds.length];
@@ -47,6 +49,8 @@ public class PPS {
                     highestPriority = priorities[i];
                 }
             }
+            // add the new high prio process
+            highPrioProcesses.add(highestPriorityProcess);
             if (highestPriorityProcess == -1) {
                 currentTime++;
             } else {
@@ -71,6 +75,10 @@ public class PPS {
 
     public int[] getProcessIds() {
         return processIds;
+    }
+
+    public int[] getProcessIDUniques(){
+        return processIDUniques;
     }
 
     public int[] getArrivalTimes() {
