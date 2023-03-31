@@ -1,0 +1,6 @@
+ALGO: A CPU SCHEDULING ALGORITHM SIMULATOR
+
+
+This program is developed by Francis Lorenzo A. Espiña, 
+Melben Kian R. Gabiana, and Shann Aurelle G. Ripalda (FMS STUDIOS) 
+as a group project for CMSC 125. It is also built using Java language and the GUI is constructed using Netbeans IDE.
