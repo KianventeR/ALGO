@@ -14,7 +14,7 @@ public class Input extends javax.swing.JPanel {
     public static ArrayList<Integer> pidArray = new ArrayList<Integer>();
     public static ArrayList<Integer> prioArray = new ArrayList<Integer>();
     public static int quantum;
-    
+    // hello I'm shann
     private void initComponents() {
         minimize = new javax.swing.JButton();
         exit = new javax.swing.JButton();
@@ -683,7 +683,31 @@ public class Input extends javax.swing.JPanel {
             
         }
         else if(algo == "prio-np"){
+            int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();
+            int[] aarray = arrivalArray.stream().mapToInt(Integer::intValue).toArray();
+            int[] parray = prioArray.stream().mapToInt(Integer::intValue).toArray();
+            try{
+                rr rr = new rr(barray, aarray, quantum);
+                System.out.println(rr);
+                javax.swing.table.DefaultTableModel model2 = (javax.swing.table.DefaultTableModel)Results.results_table.getModel();
+                int[] bursts = rr.getBursts();
+                int[] pids = rr.getProcessIDUniques();
+                int[] arrivals = rr.getArrivals();
+                int[] waits = rr.getWaitingTimes();
+                int[] turns = rr.getTurnaroundTimes();
             
+                for(int i = 0; i < pids.length; i++){
+                    Object[] row = { "P"+ (pids[i] + 1), bursts[i], arrivals[i], "-", waits[i], turns[i], "-", "-"};
+                    model2.addRow(row);
+                }
+
+                double avgWait = rr.getAverageWaitingTime();
+                double avgTurn = rr.getAverageTurnaroundTime();
+                Object[] row2 = { "", "", "", "", "", "", avgWait, avgTurn};
+                model2.addRow(row2);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         else if(algo == "prio-p"){
 
