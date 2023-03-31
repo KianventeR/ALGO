@@ -3,7 +3,7 @@ package Algorithm;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
-public class SRTF {
+public class srtf {
     private int[] arrivalTime;
     private int[] burstTime;
     private int[] processIDs;
@@ -17,7 +17,7 @@ public class SRTF {
     private double averageTurnaroundTime;
     private double averageWaitingTime;
     
-    public SRTF(int[] arrivalTime, int[] burstTime, int numProcesses) {
+    public srtf(int[] arrivalTime, int[] burstTime, int numProcesses) {
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.numProcesses = numProcesses;
@@ -122,13 +122,13 @@ public class SRTF {
             .mapToInt(i -> turnaroundTimes[i]).average().orElse(0.0); 
     }
 
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         int[] bursts = {1,4,2};
         int[] arrivals = {1,3,3};
         SRTF test_srtf = new SRTF(bursts, arrivals, bursts.length);
 
         test_srtf.calculate();
         System.out.println(test_srtf.getGanttChart());
-    }
+    }*/
 }
 

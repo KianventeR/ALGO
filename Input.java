@@ -715,7 +715,30 @@ public class Input extends javax.swing.JPanel {
             }
         }
         else if(algo == "sjf-p"){
+            int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();
+            int[] aarray = arrivalArray.stream().mapToInt(Integer::intValue).toArray();
+            try{
+                srtf srtf = new srtf(barray, aarray, barray.length);
+                System.out.println(srtf);
+                javax.swing.table.DefaultTableModel model2 = (javax.swing.table.DefaultTableModel)Results.results_table.getModel();
+                int[] bursts = srtf.getBurstTime();
+                int[] pids = srtf.getProcessIDUniques();
+                int[] arrivals = srtf.getArrivalTime();
+                int[] waits = srtf.getWaitingTimes();
+                int[] turns = srtf.getTurnaroundTimes();
+            
+                for(int i = 0; i < pids.length; i++){
+                    Object[] row = { "P"+ (pids[i] + 1), bursts[i], arrivals[i], "-", waits[i], turns[i], "-", "-"};
+                    model2.addRow(row);
+                }
 
+                double avgWait = srtf.getAverageWaitingTime();
+                double avgTurn = srtf.getAverageTurnaroundTime();
+                Object[] row2 = { "", "", "", "", "", "", avgWait, avgTurn};
+                model2.addRow(row2);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         
         ALGO.card.show(ALGO.mainPanel, "7");
