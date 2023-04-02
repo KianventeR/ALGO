@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class pps {
-    private int[] processIDs;
+    private static int[] processIDs;
     private int[] processIDUniques;
     private int[] arrivalTimes;
     private int[] burstTimes;
     private int[] priorities;
-    private int[] startTimes;
-    private int[] completionTimes;
+    private static int[] startTimes;
+    private static int[] completionTimes;
     private int[] waitingTimes;
     private int[] turnaroundTimes;
     private float averageWaitingTime;
@@ -19,12 +19,12 @@ public class pps {
     private List<String> ganttChart;
 
     public pps(int[] pids, int[] arrivalTimes, int[] burstTimes, int[] priorities) {
-        this.processIDs = pids;
+        processIDs = pids;
         this.arrivalTimes = arrivalTimes;
         this.burstTimes = burstTimes;
         this.priorities = priorities;
-        this.startTimes = new int[pids.length];
-        this.completionTimes = new int[pids.length];
+        startTimes = new int[pids.length];
+        completionTimes = new int[pids.length];
         this.waitingTimes = new int[pids.length];
         this.turnaroundTimes = new int[pids.length];
         this.averageWaitingTime = 0;
@@ -98,7 +98,7 @@ public class pps {
 
     }
 
-    public int[] getProcessIds() {
+    public static int[] getProcessIDs() {
         return processIDs;
     }
 
@@ -118,11 +118,11 @@ public class pps {
         return priorities;
     }
 
-    public int[] getCompletionTimes() {
+    public static int[] getCompletionTimes() {
         return completionTimes;
     }
 
-    public int[] getStartTimes() {
+    public static int[] getStartTimes() {
         return startTimes;
     }
 
@@ -177,24 +177,5 @@ public class pps {
         sb.append("\n");
         return sb.toString();
     }
-    /*public static void main(String[] args) {
-        int[] arrivals = {1,2,3};
-        int[] bursts = {2,2,2};
-        int[] priorities = {3,2,1};
-        int[] pids = IntStream.range(0,arrivals.length).toArray();
-        pps scheduler = new pps(pids,arrivals,bursts,priorities);
-        String ganttChart = scheduler.getGanttChart();
-        System.out.println(ganttChart);
-        for(int num : scheduler.getWaitingTimes()){
-            System.out.print(num + " ");
-        }
-        System.out.println();
-        for(int num : scheduler.getTurnaroundTimes()){
-            System.out.print(num+ " ");
-        }
-        System.out.println();
-        System.out.println(scheduler.getAverageWaitingTime());
-        System.out.println(scheduler.getAverageTurnaroundTime());
-    }*/
 }
     

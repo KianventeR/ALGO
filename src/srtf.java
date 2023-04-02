@@ -5,14 +5,14 @@ import java.util.stream.IntStream;
 public class srtf {
     private int[] arrivalTime;
     private int[] burstTime;
-    private int[] processIDs;
+    private static int[] processIDs;
     private int[] processIDUniques;
     private int numProcesses;
     private int[] turnaroundTimes;
     private int[] waitingTimes;
     private int[] remainingTime;
     private int[] completionTimes;
-    private int[] startTimes;
+    private static int[] startTimes;
     private double averageTurnaroundTime;
     private double averageWaitingTime;
     
@@ -25,7 +25,7 @@ public class srtf {
         this.waitingTimes = new int[numProcesses];
         this.remainingTime = new int[numProcesses];
         this.completionTimes = new int[numProcesses];
-        this.startTimes = new int[numProcesses];
+        startTimes = new int[numProcesses];
         
         for (int i = 0; i < numProcesses; i++) {
             this.remainingTime[i] = burstTime[i];
@@ -54,7 +54,7 @@ public class srtf {
         return completionTimes;
     }
 
-    public int[] getStartTimes() {
+    public static int[] getStartTimes() {
         return startTimes;
     }
 
@@ -68,7 +68,7 @@ public class srtf {
     public int[] getProcessIDUniques() {
         return processIDUniques;
     }
-    public int[] getProcessIDs() {
+    public static int[] getProcessIDs() {
         return processIDs;
     }
     public String getGanttChart() {
@@ -164,53 +164,53 @@ public class srtf {
             .mapToInt(i -> turnaroundTimes[i]).average().orElse(0.0); 
     }
 
-    public static void main(String[] args){
-        int[] bursts = {1,4,2,3};
-        int[] arrivals = {1,3,2,4};
-        srtf test_srtf = new srtf(arrivals, bursts, bursts.length);
+    // public static void main(String[] args){
+    //     int[] bursts = {1,4,2,3};
+    //     int[] arrivals = {1,3,2,4};
+    //     srtf test_srtf = new srtf(arrivals, bursts, bursts.length);
 
-        //System.out.println(test_srtf.getGanttChart());
-        int[] arrs = test_srtf.getProcessIDs();
-        System.out.println("\nGantt Process IDs");
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nProcesses");
-        arrs = test_srtf.getProcessIDUniques();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nArrivals");
-        arrs = test_srtf.getArrivalTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nBurst Times");
-        arrs = test_srtf.getBurstTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nStart Times");
-        arrs = test_srtf.getStartTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nCompletion Times");
-        arrs = test_srtf.getCompletionTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nWaiting Times");
-        arrs = test_srtf.getWaitingTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nTurnaround Times");
-        arrs = test_srtf.getTurnaroundTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nAverage Waiting Time: "+test_srtf.getAverageWaitingTime());
-        System.out.println("Average Turnaround Time: "+test_srtf.getAverageTurnaroundTime());
-    }
+    //     //System.out.println(test_srtf.getGanttChart());
+    //     int[] arrs = test_srtf.getProcessIDs();
+    //     System.out.println("\nGantt Process IDs");
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nProcesses");
+    //     arrs = test_srtf.getProcessIDUniques();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nArrivals");
+    //     arrs = test_srtf.getArrivalTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nBurst Times");
+    //     arrs = test_srtf.getBurstTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nStart Times");
+    //     arrs = test_srtf.getStartTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nCompletion Times");
+    //     arrs = test_srtf.getCompletionTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nWaiting Times");
+    //     arrs = test_srtf.getWaitingTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nTurnaround Times");
+    //     arrs = test_srtf.getTurnaroundTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nAverage Waiting Time: "+test_srtf.getAverageWaitingTime());
+    //     System.out.println("Average Turnaround Time: "+test_srtf.getAverageTurnaroundTime());
+    // }
 }

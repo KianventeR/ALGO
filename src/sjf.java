@@ -4,15 +4,15 @@ import java.util.Comparator;
 import java.util.stream.IntStream;
 
 public class sjf {
-    private int[] processIds;
+    private static int[] processIDs;
     private int[] arrivalTime;
     private int[] burstTime;
     private int numProcesses;
     private int[] turnaroundTimes;
     private int[] waitingTimes;
     private int[] remainingTimes;
-    private int[] completionTimes;
-    private int[] startTimes;
+    private static int[] completionTimes;
+    private static int[] startTimes;
     private double averageTurnaroundTime;
     private double averageWaitingTime;
     ArrayList<Integer> sortedPids = new ArrayList<>();
@@ -26,15 +26,15 @@ public class sjf {
         this.turnaroundTimes = new int[numProcesses];
         this.waitingTimes = new int[numProcesses];
         this.remainingTimes = new int[numProcesses];
-        this.completionTimes = new int[numProcesses];
-        this.startTimes = new int[numProcesses];
+        completionTimes = new int[numProcesses];
+        startTimes = new int[numProcesses];
         
-        this.processIds = IntStream.range(0,arrivalTime.length).boxed()
+        processIDs = IntStream.range(0,arrivalTime.length).boxed()
         .sorted(Comparator.comparing(i->this.arrivalTime[i]))
         .mapToInt(Integer::intValue)
         .toArray();
 
-        for(int i : processIds){
+        for(int i : processIDs) {
             pids.add(i);
         }
 
@@ -45,6 +45,10 @@ public class sjf {
         calculate();
     }
     
+    public static int[] getProcessIDs() {
+        return processIDs;
+    }
+
     public int[] getArrivalTimes() {
         return arrivalTime;
     }
@@ -61,16 +65,12 @@ public class sjf {
         return waitingTimes;
     }
 
-    public int[] getCompletionTimes() {
+    public static int[] getCompletionTimes() {
         return completionTimes;
     }
 
-    public int[] getStartTimes() {
+    public static int[] getStartTimes() {
         return startTimes;
-    }
-
-    public int[] getProcessIds() {
-        return processIds;
     }
 
     public double getAverageTurnaroundTime() {
@@ -143,7 +143,7 @@ public class sjf {
         }
         this.turnaroundTimes = turnaroundTime;
         this.waitingTimes = waitingTime;
-        this.startTimes = startTime;
+        startTimes = startTime;
         
         startTimes = IntStream.range(0,completionTimes.length).boxed()
         .sorted(Comparator.comparing(i->arrivalTime[i]))
@@ -176,49 +176,49 @@ public class sjf {
             .mapToInt(i -> turnaroundTimes[i]).average().orElse(0.0); 
     }
 
-    public static void main(String[] args){
-        int[] bursts = {1,4,2,3};
-        int[] arrivals = {1,3,2,4};
-        sjf test_sjf = new sjf(arrivals, bursts, bursts.length);
-        //System.out.println(test_sjf.getGanttChart());
-        System.out.println("Processes");
+    // public static void main(String[] args){
+    //     int[] bursts = {1,4,2,3};
+    //     int[] arrivals = {1,3,2,4};
+    //     sjf test_sjf = new sjf(arrivals, bursts, bursts.length);
+    //     //System.out.println(test_sjf.getGanttChart());
+    //     System.out.println("Processes");
         
-        int[] arrs = test_sjf.getProcessIds();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nArrivals");
-        arrs = test_sjf.getArrivalTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nBurst Times");
-        arrs = test_sjf.getBurstTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nStart Times");
-        arrs = test_sjf.getStartTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nCompletion Times");
-        arrs = test_sjf.getCompletionTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nWaiting Times");
-        arrs = test_sjf.getWaitingTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
-        System.out.println("\nTurnaround Times");
-        arrs = test_sjf.getTurnaroundTimes();
-        for(int i = 0; i < arrs.length; i++){
-            System.out.print(arrs[i] + " ");
-        }
+    //     int[] arrs = test_sjf.getProcessIDs();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nArrivals");
+    //     arrs = test_sjf.getArrivalTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nBurst Times");
+    //     arrs = test_sjf.getBurstTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nStart Times");
+    //     arrs = test_sjf.getStartTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nCompletion Times");
+    //     arrs = test_sjf.getCompletionTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nWaiting Times");
+    //     arrs = test_sjf.getWaitingTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
+    //     System.out.println("\nTurnaround Times");
+    //     arrs = test_sjf.getTurnaroundTimes();
+    //     for(int i = 0; i < arrs.length; i++){
+    //         System.out.print(arrs[i] + " ");
+    //     }
         
-        System.out.println("\nAverage Waiting Time: "+test_sjf.getAverageWaitingTime());
-        System.out.println("Average Turnaround Time: "+test_sjf.getAverageTurnaroundTime());
-    }
+    //     System.out.println("\nAverage Waiting Time: "+test_sjf.getAverageWaitingTime());
+    //     System.out.println("Average Turnaround Time: "+test_sjf.getAverageTurnaroundTime());
+    // }
 }

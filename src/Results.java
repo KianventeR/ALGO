@@ -1,7 +1,3 @@
-import java.awt.Color;
-import java.awt.Transparency;
-
-import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 public class Results extends javax.swing.JPanel {
@@ -13,26 +9,12 @@ public class Results extends javax.swing.JPanel {
         ALGO.input.quantum = 0;
         ALGO.input.count = 1;
     }
-    public DynamicGanttChart chart;
-    public void initComponents() {
-        // ALGO.card.show(ALGO.mainPanel, "10");
 
-        
-       int[] test = {1, 2, 3, 4, 5};
-       int[] test3 ={0, 3, 5, 8, 10};
-       int[] test2 = {2, 6, 7, 9, 12};
-        chart = new DynamicGanttChart(test, test3, test2);
-        chart.setBounds(95, 390, 1050, 220);
-        Color system_color = new Color(200, 200, 200);
-        chart.setBackground(Color.darkGray);
-        
-        add(chart);
-        
-       
+    public void initComponents() {
         minimize = new javax.swing.JButton();
         exit = new javax.swing.JButton();
         results_fms = new javax.swing.JLabel();
-        results_timer = new javax.swing.JLabel();
+        results_gantt = new javax.swing.JLabel();
         results_title = new javax.swing.JLabel();
         results_label = new javax.swing.JLabel();
         results_vol = new javax.swing.JButton();
@@ -92,23 +74,23 @@ public class Results extends javax.swing.JPanel {
         add(results_fms);
         results_fms.setBounds(1030, 20, 240, 130);
 
-        results_timer.setFont(new java.awt.Font("Poppins Black", 0, 48)); 
-        results_timer.setForeground(new java.awt.Color(255, 255, 255));
-        results_timer.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        results_timer.setText("TIMER: 000");
-        results_timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        // add(results_timer);
-        results_timer.setBounds(480, 400, 320, 50);
+        results_gantt.setFont(new java.awt.Font("Poppins Black", 0, 48)); // NOI18N
+        results_gantt.setForeground(new java.awt.Color(255, 255, 255));
+        results_gantt.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        results_gantt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/simulate/gant_cover.png"))); // NOI18N
+        results_gantt.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        //add(results_gantt);
+        results_gantt.setBounds(110, 390, 1020, 220);
 
         results_title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/fcfs-title.png"))); 
         results_title.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        // add(results_title);
-        results_title.setBounds(110, 70, 450, 90);
+        add(results_title);
+        results_title.setBounds(110, 70, 470, 110);
 
         results_label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/simulate/label.png"))); 
         results_label.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         add(results_label);
-        results_label.setBounds(110, 150, 1030, 90);
+        results_label.setBounds(110, 170, 1030, 90);
 
         results_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/mute.png"))); 
         results_vol.setBorder(null);
@@ -215,17 +197,13 @@ public class Results extends javax.swing.JPanel {
        
       
         add(jScrollPane1);
-        jScrollPane1.setBounds(110, 230, 1020, 150);
+        jScrollPane1.setBounds(110, 250, 1020, 150);
 
         results_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/input_bg.png"))); 
         results_bg.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         results_bg.setOpaque(true);
         add(results_bg);
         results_bg.setBounds(0, 0, 1280, 720);
-    }
-
-    public void start_sim() {
-        chart.startSimulation();
     }
 
     
@@ -278,7 +256,7 @@ public class Results extends javax.swing.JPanel {
         ALGO.card.show(ALGO.mainPanel, "6");
         DefaultTableModel model = (DefaultTableModel) results_table.getModel();
         model.setRowCount(0);
-
+        remove(ALGO.input.chart);
     }
 
     private void results_menuMouseEntered(java.awt.event.MouseEvent evt) {
@@ -297,6 +275,7 @@ public class Results extends javax.swing.JPanel {
         ALGO.card.show(ALGO.mainPanel, "1");
         DefaultTableModel model = (DefaultTableModel) results_table.getModel();
         model.setRowCount(0);
+        remove(ALGO.input.chart);
     }
 
     private void exitMouseEntered(java.awt.event.MouseEvent evt) {
@@ -325,6 +304,27 @@ public class Results extends javax.swing.JPanel {
         ALGO.mainFrame.setState(java.awt.Frame.ICONIFIED);
     }
 
+    public void setTitle() {
+        if(ALGO.select.algo == "fcfs") {
+            results_title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/fcfs-title.png"))); 
+        }
+        else if(ALGO.select.algo == "rr") {
+            results_title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/rr-title.png"))); 
+        }
+        else if(ALGO.select.algo == "prio-np") {
+            results_title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/prio_np-title.png"))); 
+        }
+        else if(ALGO.select.algo == "prio-p") {
+            results_title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/prio_p-title.png"))); 
+        }
+        else if(ALGO.select.algo == "sjf-np"){
+            results_title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/sjf_np-title.png"))); 
+        }
+        else if(ALGO.select.algo == "sjf-p"){
+            results_title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/sjf_p-title.png"))); 
+        }
+    }
+
     public void resetAudioButton() {
         if(ALGO.sound == true) {
             results_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/mute.png")));
@@ -341,7 +341,7 @@ public class Results extends javax.swing.JPanel {
     private javax.swing.JButton results_menu;
     private javax.swing.JButton results_return;
     public static javax.swing.JTable results_table;
-    private javax.swing.JLabel results_timer;
+    private javax.swing.JLabel results_gantt;
     private javax.swing.JLabel results_title;
     private javax.swing.JButton results_vol;
    

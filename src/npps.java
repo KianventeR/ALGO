@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.stream.IntStream;
 
 class Job {
@@ -62,10 +61,10 @@ class Job {
 }
 
 public class npps {
-    private ArrayList<Job> jobs;
+    private static ArrayList<Job> jobs;
 
     public npps(int[] burst, int[] arrival, int[] priority){
-        this.jobs = new ArrayList<>();
+        jobs = new ArrayList<>();
         addJobs(arrival, burst, priority);
         String res = generateGanttChart();
     }
@@ -84,7 +83,7 @@ public class npps {
         }
     }
 
-    public int[] getProcessIDs(){
+    public static int[] getProcessIDs(){
         return IntStream.range(0, jobs.size()).boxed()
             .mapToInt(i -> jobs.get(i).getId()).toArray();
     }
@@ -99,7 +98,7 @@ public class npps {
             .mapToInt(i -> jobs.get(i).getArrivalTime()).toArray();
     }
 
-    public int[] getStartTimes(){
+    public static int[] getStartTimes(){
         int[] startTimes = new int[jobs.size()];
 
         for (int i = 0; i < jobs.size(); i++) {
@@ -109,7 +108,7 @@ public class npps {
         return startTimes;
     }
 
-    public int[] getEndTimes(){
+    public static int[] getEndTimes(){
         int[] endTimes = new int[jobs.size()];
 
         for (int i = 0; i < jobs.size(); i++) {
@@ -202,25 +201,4 @@ public class npps {
         jobs = jobsSaved;
         return chart.toString();
     }
-
-    /*public static void main(String[] args) {
-        NPPS scheduler = new NPPS();
-        int[] arrivals = {1,2,3,4};
-        int[] bursts = {1,2,3,4};
-        int[] priorities = {4,3,2,1}; 
-        scheduler.addJobs(arrivals, bursts, priorities);
-        String ganttChart = scheduler.generateGanttChart();
-        System.out.println(ganttChart);
-        System.out.println(scheduler.isEmpty());
-        for(int num : scheduler.getWaitingTimes()){
-            System.out.print(num + " ");
-        }
-        System.out.println();
-        for(int num : scheduler.getTurnaroundTimes()){
-            System.out.print(num+ " ");
-        }
-        System.out.println();
-        System.out.println(scheduler.getAverageWaitingTime());
-        System.out.println(scheduler.getAverageTurnaroundTime());
-    }*/
 }
