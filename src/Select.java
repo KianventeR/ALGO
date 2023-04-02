@@ -329,7 +329,7 @@ public class Select extends javax.swing.JPanel {
     private void select_sjfActionPerformed(java.awt.event.ActionEvent evt) {
         algo_setter("sjf");
         Music.sfx();
-        ALGO.input.resetAudioButton();
+        ALGO.selectP.resetAudioButton();
         ALGO.selectP.setIcon();
         ALGO.card.show(ALGO.mainPanel, "9");
     }
@@ -346,7 +346,7 @@ public class Select extends javax.swing.JPanel {
     private void select_prioActionPerformed(java.awt.event.ActionEvent evt) {
         algo_setter("prio");
         Music.sfx();
-        ALGO.input.resetAudioButton();
+        ALGO.selectP.resetAudioButton();
         ALGO.selectP.setIcon();
         ALGO.card.show(ALGO.mainPanel, "9");
     }

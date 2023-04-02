@@ -19,7 +19,7 @@ public class SelectPreempt extends javax.swing.JPanel {
 
         setLayout(null);
 
-        minimize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/window/minimize.png"))); // NOI18N
+        minimize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/window/minimize.png")));
         minimize.setBorder(null);
         minimize.setBorderPainted(false);
         minimize.setContentAreaFilled(false);
@@ -40,7 +40,7 @@ public class SelectPreempt extends javax.swing.JPanel {
         add(minimize);
         minimize.setBounds(1190, 10, 40, 40);
 
-        exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/window/close.png"))); // NOI18N
+        exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/window/close.png")));
         exit.setBorder(null);
         exit.setBorderPainted(false);
         exit.setContentAreaFilled(false);
@@ -62,18 +62,18 @@ public class SelectPreempt extends javax.swing.JPanel {
         exit.setBounds(1230, 10, 40, 40);
 
         select_title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        select_title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logo/algo-small.png"))); // NOI18N
+        select_title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/logo/algo-small.png")));
         select_title.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         add(select_title);
         select_title.setBounds(150, 90, 150, 40);
 
         select_select.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        select_select.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/select_algo.png"))); // NOI18N
+        select_select.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/select_algo.png")));
         select_select.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         add(select_select);
         select_select.setBounds(150, 140, 760, 60);
 
-        select_preemptP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/preemptive.png"))); // NOI18N
+        select_preemptP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/preemptive.png")));
         select_preemptP.setBorder(null);
         select_preemptP.setBorderPainted(false);
         select_preemptP.setContentAreaFilled(false);
@@ -95,7 +95,7 @@ public class SelectPreempt extends javax.swing.JPanel {
         add(select_preemptP);
         select_preemptP.setBounds(150, 310, 350, 50);
 
-        select_nonpreemptP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/non-preemptive.png"))); // NOI18N
+        select_nonpreemptP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/non-preemptive.png")));
         select_nonpreemptP.setBorder(null);
         select_nonpreemptP.setBorderPainted(false);
         select_nonpreemptP.setContentAreaFilled(false);
@@ -122,12 +122,12 @@ public class SelectPreempt extends javax.swing.JPanel {
         add(select_logo);
         select_logo.setBounds(710, 210, 350, 330);
 
-        select_fms.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/fms-dark.png"))); // NOI18N
+        select_fms.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/fms-dark.png")));
         select_fms.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         add(select_fms);
         select_fms.setBounds(1030, 20, 240, 130);
 
-        select_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/mute.png"))); // NOI18N
+        select_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/mute.png")));
         select_vol.setBorder(null);
         select_vol.setBorderPainted(false);
         select_vol.setContentAreaFilled(false);
@@ -148,7 +148,7 @@ public class SelectPreempt extends javax.swing.JPanel {
         add(select_vol);
         select_vol.setBounds(50, 630, 60, 50);
 
-        select_return.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/window/return.png"))); // NOI18N
+        select_return.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/window/return.png")));
         select_return.setBorder(null);
         select_return.setBorderPainted(false);
         select_return.setContentAreaFilled(false);
@@ -169,7 +169,7 @@ public class SelectPreempt extends javax.swing.JPanel {
         add(select_return);
         select_return.setBounds(1180, 620, 70, 70);
 
-        select_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/select_bg.png"))); // NOI18N
+        select_bg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/select/select_bg.png")));
         select_bg.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         select_bg.setOpaque(true);
         add(select_bg);
@@ -301,6 +301,7 @@ public class SelectPreempt extends javax.swing.JPanel {
 
     private void select_returnActionPerformed(java.awt.event.ActionEvent evt) {                                              
         Music.sfx();
+        ALGO.menu.resetAudioButton();
         ALGO.card.show(ALGO.mainPanel, "1");
     }      
     

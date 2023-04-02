@@ -15,7 +15,6 @@ public class Input extends javax.swing.JPanel {
     public static ArrayList<Integer> arrivalArray = new ArrayList<Integer>();
     public static ArrayList<Integer> burstArray = new ArrayList<Integer>();
     public static ArrayList<Integer> pidArray = new ArrayList<Integer>();
-    public static Integer quant_main;
     public static ArrayList<Integer> general_burst = new ArrayList<Integer>();
     public static ArrayList<Integer> general_arrival = new ArrayList<Integer>();
     public ArrayList<Integer> prioArray = new ArrayList<Integer>();
@@ -461,8 +460,14 @@ public class Input extends javax.swing.JPanel {
                     Object[] row = { "P"+ id, burst, arrival, "--" };
                     model.addRow(row);
                 }
-                else if(ALGO.select.algo == "rr"){
-                    input_to_rr(id, Integer.parseInt(burst), Integer.parseInt(arrival), Integer.parseInt(input_quantumIn.getText()));
+                else if(ALGO.select.algo == "rr") {
+                    try {
+                        input_to_rr(id, Integer.parseInt(burst), Integer.parseInt(arrival), Integer.parseInt(input_quantumIn.getText()));
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Enter a time quantum first (Write only, do not press 'Input').");
+                        return;
+                    }
+                    
                     input_quantumIn.setEnabled(false);
                     input_quantum.setEnabled(false);
                     count = id + 1;
@@ -494,11 +499,10 @@ public class Input extends javax.swing.JPanel {
                     model.addRow(row);
                 }
             }
-            //input_simulateActionPerformed(null);
+            input_simulateActionPerformed(null);
             read.close();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Imported text file contains invalid inputs.");
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Imported text file contains invalid/missing inputs.");
         }
     }                                            
 
@@ -520,7 +524,7 @@ public class Input extends javax.swing.JPanel {
         pidArray.add(pid);
         arrivalArray.add(arrival);
         burstArray.add(burst);
-        quant_main = quantum;
+        this.quantum = quantum;
     }
     
     public void input_to_prio_np(int pid, int burst, int arrival, int priority) {
@@ -751,9 +755,9 @@ public class Input extends javax.swing.JPanel {
             return;
         }
         
-        int[] pid = {1, 2, 3, 4, 5};
-        int[] start ={5, 3, 1, 8, 10};
-        int[] end = {7, 6, 2, 9, 12};
+        int[] pid = { };
+        int[] start ={ };
+        int[] end = { };
         if(ALGO.select.algo == "fcfs"){
             fcfs fcfs = new fcfs(arrivalArray, burstArray);
             javax.swing.table.DefaultTableModel model2 = (javax.swing.table.DefaultTableModel)Results.results_table.getModel();
@@ -784,7 +788,7 @@ public class Input extends javax.swing.JPanel {
             int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();
             int[] aarray = arrivalArray.stream().mapToInt(Integer::intValue).toArray();
             try{
-                rr rr = new rr(barray, aarray, quant_main);
+                rr rr = new rr(barray, aarray, quantum);
                 javax.swing.table.DefaultTableModel model2 = (javax.swing.table.DefaultTableModel)Results.results_table.getModel();
                 int[] bursts = rr.getBursts();
                 int[] pids = rr.getProcessIDUniques();

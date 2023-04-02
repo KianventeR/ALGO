@@ -2,19 +2,26 @@ import java.awt.*;
 import javax.swing.*;
 
 public class DynamicGanttChart extends JPanel {
-    public  String[] jobNames;
-    public int plen;
+    public String[] jobNames;
     public int[] startTimes;
     public int[] endTimes;
-    public Color[] jobColors = {Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.MAGENTA, Color.CYAN, Color.PINK, Color.YELLOW, Color.RED, Color.ORANGE,
-        Color.LIGHT_GRAY, Color.GREEN, Color.ORANGE, Color.MAGENTA, Color.YELLOW, Color.ORANGE, Color.PINK, Color.ORANGE, Color.RED, Color.MAGENTA};
+    public int[] intArray;
+    public Color[] jobColors = { new Color(0, 0, 0),
+        new Color(79, 155, 252), new Color(246, 187, 57), new Color(53, 213, 166), new Color(201, 53, 235), new Color(60, 78, 97),
+        new Color(52, 81, 151), new Color(253, 125, 61), new Color(77, 167, 75), new Color(155, 54, 243), new Color(249, 19, 19),
+        new Color(53, 150, 211), new Color(234, 239, 55), new Color(58, 250, 122), new Color(188, 51, 193), new Color(201, 0, 47), 
+        // Duplicated for extra set of colors
+        new Color(79, 155, 252), new Color(246, 187, 57), new Color(53, 213, 166), new Color(201, 53, 235), new Color(60, 78, 97),
+        new Color(52, 81, 151), new Color(253, 125, 61), new Color(77, 167, 75), new Color(155, 54, 243), new Color(249, 19, 19),
+        new Color(53, 150, 211), new Color(234, 239, 55), new Color(58, 250, 122), new Color(188, 51, 193), new Color(201, 0, 47)
+    };
     int currentTime;
     int refreshRate;
     int totalTime;
 
     DynamicGanttChart(int[] pids, int[]startTimes, int[]end_times){
-        int[] intArray = pids;
-        plen = pids.length;
+        intArray = pids;
+       
         String[] strArray = new String[intArray.length];
  
         for (int i = 0; i < intArray.length; i++) {
@@ -58,7 +65,10 @@ public class DynamicGanttChart extends JPanel {
             if (startTimes[i] <= currentTime) {
                 int x = 50 + startTimes[i] * (width - 75) / totalTime;
                 int w = (endTimes[i] - startTimes[i]) * (width - 75) / totalTime;
-                g2d.setColor(jobColors[i % plen]);
+                if(Integer.parseInt(jobNames[i]) == intArray[i]) {
+                    g2d.setColor(jobColors[intArray[i]]);
+                }
+                // g2d.setColor(jobColors[i]);
                 g2d.fillRect(x, 50, w, 50);
 
                 g2d.drawString("P"+ jobNames[i], x + w / 2-20, 25);
