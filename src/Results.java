@@ -1,3 +1,7 @@
+import java.awt.Color;
+import java.awt.Transparency;
+
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 public class Results extends javax.swing.JPanel {
@@ -9,8 +13,21 @@ public class Results extends javax.swing.JPanel {
         ALGO.input.quantum = 0;
         ALGO.input.count = 1;
     }
-    private void initComponents() {
-       
+    public DynamicGanttChart chart;
+    public void initComponents() {
+        // ALGO.card.show(ALGO.mainPanel, "10");
+
+        
+       int[] test = {1, 2, 3, 4, 5};
+       int[] test3 ={0, 3, 5, 8, 10};
+       int[] test2 = {2, 6, 7, 9, 12};
+        chart = new DynamicGanttChart(test, test3, test2);
+        chart.setBounds(95, 390, 1050, 220);
+        Color system_color = new Color(200, 200, 200);
+        chart.setBackground(Color.darkGray);
+        
+        add(chart);
+        
        
         minimize = new javax.swing.JButton();
         exit = new javax.swing.JButton();
@@ -46,6 +63,7 @@ public class Results extends javax.swing.JPanel {
             }
         });
         add(minimize);
+        
         minimize.setBounds(1190, 10, 40, 40);
 
         exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/window/close.png"))); 
@@ -79,12 +97,12 @@ public class Results extends javax.swing.JPanel {
         results_timer.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         results_timer.setText("TIMER: 000");
         results_timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        add(results_timer);
+        // add(results_timer);
         results_timer.setBounds(480, 400, 320, 50);
 
         results_title.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/fcfs-title.png"))); 
         results_title.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        add(results_title);
+        // add(results_title);
         results_title.setBounds(110, 70, 450, 90);
 
         results_label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/simulate/label.png"))); 
@@ -206,6 +224,10 @@ public class Results extends javax.swing.JPanel {
         results_bg.setBounds(0, 0, 1280, 720);
     }
 
+    public void start_sim() {
+        chart.startSimulation();
+    }
+
     
     private void results_volMouseEntered(java.awt.event.MouseEvent evt) {
         if(ALGO.sound == true) {
@@ -310,7 +332,6 @@ public class Results extends javax.swing.JPanel {
             results_vol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/menu/buttons/muteX.png")));
         }
     }
-
     private javax.swing.JButton exit;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton minimize;
@@ -323,4 +344,6 @@ public class Results extends javax.swing.JPanel {
     private javax.swing.JLabel results_timer;
     private javax.swing.JLabel results_title;
     private javax.swing.JButton results_vol;
+   
+    
 }

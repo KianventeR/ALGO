@@ -5,7 +5,6 @@ public class ALGO extends javax.swing.JFrame {
     public static JFrame mainFrame = new JFrame();
     public static JPanel mainPanel = new JPanel();
     public static CardLayout card = new CardLayout();
-
     public static MainMenu menu = new MainMenu();
     public static SplashScreen splashScreen = new SplashScreen();
     public static About about = new About();
@@ -20,9 +19,9 @@ public class ALGO extends javax.swing.JFrame {
     
     public ALGO() {
         mainFrame.setSize(1280, 720);
-        mainFrame.setTitle("Terminated");
+        mainFrame.setTitle("ALGO");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setUndecorated(false);
+        mainFrame.setUndecorated(true);
         
         mainPanel.setLayout(card);
         mainPanel.add(menu, "1");
@@ -34,7 +33,7 @@ public class ALGO extends javax.swing.JFrame {
         mainPanel.add(results, "7");
         mainPanel.add(load, "8");
         mainPanel.add(selectP, "9");
-        
+
         mainFrame.add(mainPanel);
         mainFrame.pack();
         

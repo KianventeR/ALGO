@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -68,9 +69,33 @@ public class pps {
                 currentTime++;
             }
         }
+        // process table variables
         averageWaitingTime /= processIDs.length;
         averageTurnaroundTime /= processIDs.length;
-        processIDs = highPrioProcesses.stream().mapToInt(Integer::intValue).toArray(); 
+        processIDUniques = IntStream.range(0, processIDs.length).boxed()
+        .sorted(Comparator.comparingInt(i -> arrivalTimes[i]))
+        .mapToInt(i-> processIDs[i]).toArray();
+        waitingTimes = IntStream.range(0, processIDs.length).boxed()
+        .sorted(Comparator.comparingInt(i -> arrivalTimes[i]))
+        .mapToInt(i-> waitingTimes[i]).toArray();
+        turnaroundTimes = IntStream.range(0, processIDs.length).boxed()
+        .sorted(Comparator.comparingInt(i -> arrivalTimes[i]))
+        .mapToInt(i-> turnaroundTimes[i]).toArray();
+        priorities = IntStream.range(0, processIDs.length).boxed()
+        .sorted(Comparator.comparingInt(i -> arrivalTimes[i]))
+        .mapToInt(i-> priorities[i]).toArray();
+        burstTimes = IntStream.range(0, processIDs.length).boxed()
+        .sorted(Comparator.comparingInt(i -> arrivalTimes[i]))
+        .mapToInt(i-> burstTimes[i]).toArray();
+        arrivalTimes = IntStream.range(0, processIDs.length).boxed()
+        .sorted(Comparator.comparingInt(i -> arrivalTimes[i]))
+        .mapToInt(i-> arrivalTimes[i]).toArray();
+
+        // gantt chart variables
+        processIDs = highPrioProcesses.stream().mapToInt(Integer::intValue).toArray();
+        completionTimes = highPrioProcesses.stream().mapToInt(i-> completionTimes[i]).toArray();
+        startTimes = highPrioProcesses.stream().mapToInt(i-> startTimes[i]).toArray();
+
     }
 
     public int[] getProcessIds() {
@@ -109,11 +134,11 @@ public class pps {
         return turnaroundTimes;
     }
 
-    public float getAverageWaitingTime() {
+    public double getAverageWaitingTime() {
         return averageWaitingTime;
     }
 
-    public float getAverageTurnaroundTime() {
+    public double getAverageTurnaroundTime() {
         return averageTurnaroundTime;
     }
 
@@ -153,12 +178,11 @@ public class pps {
         return sb.toString();
     }
     /*public static void main(String[] args) {
-        int[] arrivals = {1,2,3,4};
-        int[] bursts = {1,2,3,4};
-        int[] priorities = {4,3,2,1};
+        int[] arrivals = {1,2,3};
+        int[] bursts = {2,2,2};
+        int[] priorities = {3,2,1};
         int[] pids = IntStream.range(0,arrivals.length).toArray();
-        PPS scheduler = new PPS(pids,arrivals,bursts,priorities);
-
+        pps scheduler = new pps(pids,arrivals,bursts,priorities);
         String ganttChart = scheduler.getGanttChart();
         System.out.println(ganttChart);
         for(int num : scheduler.getWaitingTimes()){

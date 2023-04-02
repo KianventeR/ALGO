@@ -12,6 +12,7 @@ public class rr {
     private int[] endTimes;
     private int[] waitingTimes;
     private int[] turnaroundTimes;
+    private int[] completions;
     private int quantum;
     private double averageWaitingTime;
     private double averageTurnaroundTime;
@@ -22,29 +23,22 @@ public class rr {
         arrivals = arrival_times;
         quantum = time_slice;
 
-        // sort burst array by arrival time
-        final int[] sorted_bursts = IntStream.range(0, arrivals.length).boxed()
-            .sorted(Comparator.comparingInt(i -> arrivals[i]))
-            .mapToInt(i -> bursts[i])
-            .toArray();
-
-        final int[] sorted_ids = IntStream.range(0, arrivals.length).boxed()
-        .sorted(Comparator.comparingInt(i -> arrivals[i]))
+        processIDUniques = IntStream.range(0, arrivals.length).boxed()
+        .sorted(Comparator.comparingInt(i -> arrival_times[i]))
         .mapToInt(Integer::intValue)
         .toArray();
 
-        processIDUniques = sorted_ids;
-
         // copy the sorted bursts into the original burst    
-        bursts = sorted_bursts.clone();
+        int[] sorted_bursts = bursts.clone();
 
-        final int[] sorted_arrivals = arrivals.clone();
-        Arrays.sort(sorted_arrivals);
+        int[] sorted_arrivals = arrivals.clone();
 
         ArrayList<Integer> ends = new ArrayList<Integer>();
         ArrayList<Integer> processes = new ArrayList<Integer>();
         ArrayList<Integer> starts = new ArrayList<>(); 
-        int[] completions = new int[arrivals.length];
+        ArrayList<Integer> firstExecs = new ArrayList<>();
+
+        completions = new int[arrivals.length];
 
         int burstsleft = Arrays.stream(sorted_bursts).sum();
         int time = 0;
@@ -59,6 +53,9 @@ public class rr {
 
                     processes.add(index);
                     starts.add(time);
+                    if(sorted_bursts[index] == bursts[index]){
+                        firstExecs.add(time);
+                    }
 
                     if(sorted_bursts[index] > quantum){
                         // still has remaining time
@@ -88,20 +85,41 @@ public class rr {
         // save the end_times, arrivals, and process ids
         startTimes = starts.stream().mapToInt(Integer::intValue).toArray();
         endTimes = ends.stream().mapToInt(Integer::intValue).toArray();
+
         // generate turnaround values
         turnaroundTimes = IntStream.range(0, arrivals.length).boxed()
             .mapToInt(i -> completions[i]-arrivals[i])
             .toArray();
+        // generate waiting times
+        waitingTimes = IntStream.range(0, arrivals.length).boxed()
+            .mapToInt(i->turnaroundTimes[i]-bursts[i])
+            .toArray();
+
         //sort turnaround by arrival
         turnaroundTimes = IntStream.range(0, arrivals.length).boxed()
             .sorted(Comparator.comparingInt(i -> arrivals[i]))
             .mapToInt(i -> turnaroundTimes[i])
             .toArray();
+
+        completions = IntStream.range(0, arrivals.length).boxed()
+        .sorted(Comparator.comparingInt(i -> arrivals[i]))
+        .mapToInt(i -> completions[i])
+        .toArray();
         
-        arrivals = sorted_arrivals;
         waitingTimes = IntStream.range(0, arrivals.length).boxed()
-            .mapToInt(i->startTimes[i]-arrivals[i])
-            .toArray();
+        .sorted(Comparator.comparingInt(i -> arrivals[i]))
+        .mapToInt(i -> waitingTimes[i])
+        .toArray();
+
+        bursts = IntStream.range(0, arrivals.length).boxed()
+        .sorted(Comparator.comparingInt(i -> arrivals[i]))
+        .mapToInt(i -> bursts[i])
+        .toArray();
+
+        arrivals = IntStream.range(0, arrivals.length).boxed()
+        .sorted(Comparator.comparingInt(i -> arrivals[i]))
+        .mapToInt(i->arrivals[i])
+        .toArray();
         
         averageWaitingTime = IntStream.range(0,waitingTimes.length).boxed()
             .mapToInt(i -> waitingTimes[i]).average().orElse(0.0);
@@ -117,6 +135,10 @@ public class rr {
 
     public int[] getEndTimes() {
         return endTimes;
+    }
+
+    public int[] getCompletions() {
+        return completions;
     }
 
     public int[] getArrivals() {
@@ -156,23 +178,24 @@ public class rr {
         int[] ends = this.getEndTimes();
         int[] starts = this.getStartTimes();
         int[] pids = this.getProcessIDs();
+        int[] pidUniques = this.getProcessIDUniques();
         int[] waits = this.getWaitingTimes();
         int[] turns = this.getTurnaroundTimes();
+        int[] completes = this.getCompletions();
         final String result = IntStream.range(0, ends.length).boxed()
         .map(i -> "Process " + (pids[i]+1) + " S: " + starts[i] + " E: " + ends[i] + "\n")
         .reduce("",String::concat);
-        final String result2 = IntStream.range(0, waits.length).boxed()
-        .map(i-> "Process" + (i+1) + " W: " + waits[i] + " T: " + turns[i] + "\n")
+        final String result2 = IntStream.range(0, pidUniques.length).boxed()
+        .map(i-> "Process" + (pidUniques[i]+1) + " W: " + waits[i] + " T: " + turns[i] + " C: " + completes[i] + "\n")
         .reduce(result, String::concat);
         return result2;
     }
 
-    /*public static void main(String[] args){
-        int[] bursts = {1,2,3};
-        int[] arrivals = {1,1,1};
+    public static void main(String[] args){
+        int[] bursts = {2,3,1,2,4};
+        int[] arrivals = {1,3,2,4,5};
         int time_slice = 1;
-        rr test_rr = new RR(bursts, arrivals, time_slice);
+        rr test_rr = new rr(bursts, arrivals, time_slice);
         System.out.println(test_rr.toString());
-        
-    }*/
+    }
 }
