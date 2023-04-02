@@ -19,7 +19,7 @@ public class Input extends javax.swing.JPanel {
     public static ArrayList<Integer> general_burst = new ArrayList<Integer>();
     public static ArrayList<Integer> general_arrival = new ArrayList<Integer>();
     public ArrayList<Integer> prioArray = new ArrayList<Integer>();
-
+    public int counter = 0;
 
     private void initComponents() {
         minimize = new javax.swing.JButton();
@@ -445,11 +445,11 @@ public class Input extends javax.swing.JPanel {
         try (Scanner read = new Scanner(file)) {
             read.useDelimiter(",");
            
-            String process, burst, arrival, priority;
+            String burst, arrival, priority;
             int id = 0;
             while (read.hasNext()) {
                 id++;
-                process = read.next().trim();
+                read.next().trim();
                 burst = read.next();
                 arrival = read.next();
                 priority = read.next();
@@ -505,8 +505,6 @@ public class Input extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Imported text file contains invalid inputs.");
             e.printStackTrace();
         }
-       
-        
     }                                            
 
     private void input_inputMouseEntered(java.awt.event.MouseEvent evt) {                                         
@@ -516,8 +514,6 @@ public class Input extends javax.swing.JPanel {
     private void input_inputMouseExited(java.awt.event.MouseEvent evt) {                                        
         input_input.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/input.png")));
     }       
-
-    public int counter = 0;
 
     public void input_to_fcfs(int pid, int burst, int arrival){
         pidArray.add(pid);
@@ -531,7 +527,6 @@ public class Input extends javax.swing.JPanel {
         burstArray.add(burst);
         quant_main = quantum;
     }
-
     
     public void input_to_prio_np(int pid, int burst, int arrival, int priority) {
         pidArray.add(pid);
@@ -546,7 +541,6 @@ public class Input extends javax.swing.JPanel {
         arrivalArray.add(arrival);
         burstArray.add(burst);
         prioArray.add(priority);
-
     }
 
     public void input_to_sjf_np(int pid, int burst, int arrival) {
@@ -815,6 +809,12 @@ public class Input extends javax.swing.JPanel {
             }catch (Exception e){
                 e.printStackTrace();
             }
+            pid = rr.getProcessIDs();
+            for(int i=0; i<pid.length; i++) {
+                pid[i] = pid[i]+1;
+            }
+            start = rr.getStartTimes();
+            end = rr.getEndTimes();
         }
         else if(ALGO.select.algo == "prio-np"){
             int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();
@@ -876,7 +876,7 @@ public class Input extends javax.swing.JPanel {
             }catch (Exception e){
                 e.printStackTrace();
             }
-            pid = pps.getProcessIDs();
+            pid = pps.getProcessIDUniques();
             for(int i=0; i<pid.length; i++) {
                 pid[i] = pid[i]+1;
             }

@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 
 public class pps {
     private static int[] processIDs;
-    private int[] processIDUniques;
+    private static int[] processIDUniques;
     private int[] arrivalTimes;
     private int[] burstTimes;
     private int[] priorities;
@@ -149,7 +149,7 @@ public class pps {
         return processIDs;
     }
 
-    public int[] getProcessIDUniques(){
+    public static int[] getProcessIDUniques(){
         return processIDUniques;
     }
 
@@ -228,39 +228,38 @@ public class pps {
         sb.append("\n");
         return sb.toString();
     }
+    public static void main(String[] args) {
+        int[] arrivals = {2,3,4};
+        int[] bursts = {2,2,2};
+        int[] priorities = {3,2,1};
+        int[] pids = IntStream.range(0,arrivals.length).toArray();
+        pps scheduler = new pps(pids,arrivals,bursts,priorities);
 
-    // public static void main(String[] args) {
-    //     int[] arrivals = {2,3,4};
-    //     int[] bursts = {2,2,2};
-    //     int[] priorities = {3,2,1};
-    //     int[] pids = IntStream.range(0,arrivals.length).toArray();
-    //     pps scheduler = new pps(pids,arrivals,bursts,priorities);
+        String ganttChart = scheduler.getGanttChart();
+        System.out.println(ganttChart);
+        for(int num : scheduler.getProcessIDs()){
+            System.out.print(num + " ");
+        }
+        System.out.println("\nStart Times");
+        for(int num : scheduler.getStartTimes()){
+            System.out.print(num + " ");
+        }
+        System.out.println("\nEnd Times");
+        for(int num : scheduler.getEndTimes()){
+            System.out.print(num + " ");
+        }
+        System.out.println("\n--------");
 
-    //     String ganttChart = scheduler.getGanttChart();
-    //     System.out.println(ganttChart);
-    //     for(int num : scheduler.getProcessIds()){
-    //         System.out.print(num + " ");
-    //     }
-    //     System.out.println("\nStart Times");
-    //     for(int num : scheduler.getStartTimes()){
-    //         System.out.print(num + " ");
-    //     }
-    //     System.out.println("\nEnd Times");
-    //     for(int num : scheduler.getEndTimes()){
-    //         System.out.print(num + " ");
-    //     }
-    //     System.out.println("\n--------");
-
-    //     for(int num : scheduler.getWaitingTimes()){
-    //         System.out.print(num + " ");
-    //     }
-    //     System.out.println();
-    //     for(int num : scheduler.getTurnaroundTimes()){
-    //         System.out.print(num+ " ");
-    //     }
-    //     System.out.println();
-    //     System.out.println(scheduler.getAverageWaitingTime());
-    //     System.out.println(scheduler.getAverageTurnaroundTime());
-    // }
+        for(int num : scheduler.getWaitingTimes()){
+            System.out.print(num + " ");
+        }
+        System.out.println();
+        for(int num : scheduler.getTurnaroundTimes()){
+            System.out.print(num+ " ");
+        }
+        System.out.println();
+        System.out.println(scheduler.getAverageWaitingTime());
+        System.out.println(scheduler.getAverageTurnaroundTime());
+    }
 }
     

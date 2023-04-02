@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -67,10 +66,10 @@ public class npps {
     private static ArrayList<Job> jobs;
 
     public npps(int[] burst, int[] arrival, int[] priority){
-        this.jobs = new ArrayList<>();
+        jobs = new ArrayList<>();
         addJobs(arrival, burst, priority);
         
-        String res = generateGanttChart();
+        generateGanttChart();
     }
 
     public void addJob(Job job) {
@@ -204,37 +203,5 @@ public class npps {
         .map(i-> jobs.get(i))
         .collect(Collectors.toCollection(ArrayList::new));
         return chart.toString();
-    }
-
-    public static void main(String[] args) {
-        int[] arrivals = {1,3,2,4,5};
-        int[] bursts = {2,3,1,2,4};
-        int[] priorities = {1,2,3,4,5}; 
-        npps scheduler = new npps(bursts, arrivals, priorities);
-        String ganttChart = scheduler.generateGanttChart();
-        System.out.println(ganttChart);
-        System.out.println(scheduler.isEmpty());
-        for(int num : scheduler.getProcessIDs()){
-            System.out.print(num + " ");
-        }
-        System.out.println();
-        for(int num : scheduler.getStartTimes()){
-            System.out.print(num + " ");
-        }
-        System.out.println();
-        for(int num : scheduler.getEndTimes()){
-            System.out.print(num + " ");
-        }
-        System.out.println();
-        for(int num : scheduler.getWaitingTimes()){
-            System.out.print(num + " ");
-        }
-        System.out.println();
-        for(int num : scheduler.getTurnaroundTimes()){
-            System.out.print(num+ " ");
-        }
-        System.out.println();
-        System.out.println(scheduler.getAverageWaitingTime());
-        System.out.println(scheduler.getAverageTurnaroundTime());
     }
 }

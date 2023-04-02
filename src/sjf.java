@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.stream.IntStream;
 
 public class sjf {
-    private static int[] processIds;
+    private static int[] processIDs;
     private int[] arrivalTime;
     private int[] burstTime;
     private int numProcesses;
@@ -26,22 +26,22 @@ public class sjf {
         this.turnaroundTimes = new int[numProcesses];
         this.waitingTimes = new int[numProcesses];
         this.remainingTimes = new int[numProcesses];
-        this.completionTimes = new int[numProcesses];
-        this.startTimes = new int[numProcesses];
+        completionTimes = new int[numProcesses];
+        startTimes = new int[numProcesses];
         
-        this.processIds = IntStream.range(0,arrivalTime.length).boxed()
+        processIDs = IntStream.range(0,arrivalTime.length).boxed()
         .sorted(Comparator.comparing(i->this.arrivalTime[i]))
         .mapToInt(Integer::intValue)
         .toArray();
 
-        for(int i : processIds){
+        for(int i : processIDs){
             pids.add(i);
         }
 
         for (int i = 0; i < numProcesses; i++) {
             this.remainingTimes[i] = burstTime[i];
         }
-        String res = getGanttChart();
+        getGanttChart();
         calculate();
     }
     
@@ -70,7 +70,7 @@ public class sjf {
     }
 
     public static int[] getProcessIDs() {
-        return processIds;
+        return processIDs;
     }
 
     public double getAverageTurnaroundTime() {
@@ -143,7 +143,7 @@ public class sjf {
         }
         this.turnaroundTimes = turnaroundTime;
         this.waitingTimes = waitingTime;
-        this.startTimes = startTime;
+        startTimes = startTime;
         
         startTimes = IntStream.range(0,completionTimes.length).boxed()
         .sorted(Comparator.comparing(i->arrivalTime[i]))
