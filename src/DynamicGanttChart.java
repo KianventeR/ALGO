@@ -40,7 +40,7 @@ public class DynamicGanttChart extends JPanel {
         super.paintComponent(g);
         
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setFont(new java.awt.Font("Poppins Bold", 0, 20)); 
+        g2d.setFont(new java.awt.Font("Poppins SemiBold", 0, 20)); 
         g2d.setColor(Color.WHITE);
                 
         int width = 800;
@@ -53,7 +53,7 @@ public class DynamicGanttChart extends JPanel {
             g2d.drawString("Time Quantum: " + ALGO.input.quantum, 30, 150);
         }
 
-        g2d.setFont(new java.awt.Font("Poppins Bold", 0, 14)); 
+        g2d.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); 
         for (int i = 0; i < jobNames.length; i++) {
             if (startTimes[i] <= currentTime) {
                 int x = 50 + startTimes[i] * (width - 75) / totalTime;

@@ -28,12 +28,12 @@ public class srtf {
         this.waitingTimes = new int[numProcesses];
         this.remainingTime = new int[numProcesses];
         this.completionTimes = new int[numProcesses];
-        this.startTimes = new int[numProcesses];
+        startTimes = new int[numProcesses];
         
         for (int i = 0; i < numProcesses; i++) {
             this.remainingTime[i] = burstTime[i];
         }
-        String res = getGanttChart();
+        getGanttChart();
         calculate();
     }
     
@@ -81,7 +81,6 @@ public class srtf {
         ArrayList<Integer> pids = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         int currentTime = 0;
-        int previousTime = 0;
         int[] completed = new int[numProcesses];
         int completedCount = 0;
         ArrayList<Integer> firstExecs = new ArrayList<>();
@@ -112,10 +111,10 @@ public class srtf {
             }
             // save the first changes of a process
             if(prevProcess != nextProcess){
-                firstExecs.add(currentTime-1);
+                firstExecs.add(currentTime);
                 // if some time passed already, only then add
                 if(currentTime > 0){
-                    lastExecs.add(currentTime);
+                    lastExecs.add(currentTime + 1);
                 }
                 prevProcess = nextProcess;
             }
@@ -125,7 +124,6 @@ public class srtf {
             // if no process is present, be idle
             if (nextProcess == -1) {
                 sb.append("-");
-                
             } else {
                 // run shortest remaining time for one time unit
                 sb.append("P" + nextProcess);

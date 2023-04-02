@@ -454,16 +454,13 @@ public class Input extends javax.swing.JPanel {
                 arrival = read.next();
                 priority = read.next();
                 javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)input_table.getModel();
-              
 
                 if(ALGO.select.algo == "fcfs"){
                     input_to_fcfs(id, Integer.parseInt(burst), Integer.parseInt(arrival));
                     count = id + 1;
                     Object[] row = { "P"+ id, burst, arrival, "--" };
                     model.addRow(row);
-
                 }
-
                 else if(ALGO.select.algo == "rr"){
                     input_to_rr(id, Integer.parseInt(burst), Integer.parseInt(arrival), Integer.parseInt(input_quantumIn.getText()));
                     input_quantumIn.setEnabled(false);
@@ -477,7 +474,6 @@ public class Input extends javax.swing.JPanel {
                     count = id + 1;
                     Object[] row = { "P"+ id, burst, arrival, priority };
                     model.addRow(row);
-
                 }
                 else if(ALGO.select.algo == "prio-np"){
                     input_to_prio_np(id, Integer.parseInt(burst), Integer.parseInt(arrival), Integer.parseInt(priority));
@@ -497,9 +493,8 @@ public class Input extends javax.swing.JPanel {
                     Object[] row = { "P"+ id, burst, arrival, "--"};
                     model.addRow(row);
                 }
-
             }
-            input_simulateActionPerformed(null);
+            //input_simulateActionPerformed(null);
             read.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Imported text file contains invalid inputs.");
@@ -876,12 +871,12 @@ public class Input extends javax.swing.JPanel {
             }catch (Exception e){
                 e.printStackTrace();
             }
-            pid = pps.getProcessIDUniques();
+            pid = pps.getProcessIDs();
             for(int i=0; i<pid.length; i++) {
                 pid[i] = pid[i]+1;
             }
             start = pps.getStartTimes();
-            end = pps.getCompletionTimes();
+            end = pps.getEndTimes();
         }
         else if(ALGO.select.algo == "sjf-np") {
             int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();
