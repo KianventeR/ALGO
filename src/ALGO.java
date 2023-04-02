@@ -38,6 +38,15 @@ public class ALGO extends javax.swing.JFrame {
         
         mainFrame.setVisible(true);
         mainFrame.setLocationRelativeTo(null);
+
+        try {
+            java.awt.Font poppins_semibold = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT,
+                    getClass().getClassLoader().getResourceAsStream("Poppins-SemiBold.ttf"));
+            java.awt.GraphicsEnvironment ge = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(poppins_semibold);
+        } catch (java.io.IOException | java.awt.FontFormatException e) {
+            e.printStackTrace();
+        }
         
         card.show(mainPanel, "2");
         Music.bgMusic();
