@@ -3,9 +3,10 @@ import javax.swing.*;
 
 public class DynamicGanttChart extends JPanel {
     public  String[] jobNames;
-    public  int[] startTimes;
-    public  int[] endTimes;
-    public  Color[] jobColors = {Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.MAGENTA, Color.CYAN, Color.PINK, Color.YELLOW, Color.RED, Color.ORANGE,
+    public int plen;
+    public int[] startTimes;
+    public int[] endTimes;
+    public Color[] jobColors = {Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE, Color.MAGENTA, Color.CYAN, Color.PINK, Color.YELLOW, Color.RED, Color.ORANGE,
         Color.LIGHT_GRAY, Color.GREEN, Color.ORANGE, Color.MAGENTA, Color.YELLOW, Color.ORANGE, Color.PINK, Color.ORANGE, Color.RED, Color.MAGENTA};
     int currentTime;
     int refreshRate;
@@ -13,7 +14,7 @@ public class DynamicGanttChart extends JPanel {
 
     DynamicGanttChart(int[] pids, int[]startTimes, int[]end_times){
         int[] intArray = pids;
- 
+        plen = pids.length;
         String[] strArray = new String[intArray.length];
  
         for (int i = 0; i < intArray.length; i++) {
@@ -57,7 +58,7 @@ public class DynamicGanttChart extends JPanel {
             if (startTimes[i] <= currentTime) {
                 int x = 50 + startTimes[i] * (width - 75) / totalTime;
                 int w = (endTimes[i] - startTimes[i]) * (width - 75) / totalTime;
-                g2d.setColor(jobColors[i % 12]);
+                g2d.setColor(jobColors[i % plen]);
                 g2d.fillRect(x, 50, w, 50);
 
                 g2d.drawString("P"+ jobNames[i], x + w / 2-20, 25);

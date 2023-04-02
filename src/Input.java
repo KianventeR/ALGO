@@ -938,6 +938,12 @@ public class Input extends javax.swing.JPanel {
             }catch (Exception e){
                 e.printStackTrace();
             }
+            pid = srtf.getProcessIDs();
+            for(int i=0; i<pid.length; i++) {
+                pid[i] = pid[i]+1;
+            }
+            start = srtf.getStartTimes();
+            end = srtf.getEndTimes();
         }
         chart = new DynamicGanttChart(pid, start, end);
         chart.setBounds(110, 400, 1020, 180);

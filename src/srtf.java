@@ -7,15 +7,15 @@ import java.util.stream.IntStream;
 public class srtf {
     private int[] arrivalTime;
     private int[] burstTime;
-    private int[] processIDs;
+    private static int[] processIDs;
     private int[] processIDUniques;
     private int numProcesses;
     private int[] turnaroundTimes;
     private int[] waitingTimes;
     private int[] remainingTime;
     private int[] completionTimes;
-    private int[] startTimes;
-    private int[] endTimes;
+    private static int[] startTimes;
+    private static int[] endTimes;
     private double averageTurnaroundTime;
     private double averageWaitingTime;
     
@@ -57,10 +57,10 @@ public class srtf {
         return completionTimes;
     }
 
-    public int[] getStartTimes() {
+    public static int[] getStartTimes() {
         return startTimes;
     }
-    public int[] getEndTimes() {
+    public static int[] getEndTimes() {
         return endTimes;
     }
 
@@ -74,7 +74,7 @@ public class srtf {
     public int[] getProcessIDUniques() {
         return processIDUniques;
     }
-    public int[] getProcessIDs() {
+    public static int[] getProcessIDs() {
         return processIDs;
     }
     public String getGanttChart() {
@@ -222,8 +222,8 @@ public class srtf {
     }
 
     // public static void main(String[] args){
-    //     int[] bursts = {2,2,2,2};
-    //     int[] arrivals = {2,4,3,5};
+    //     int[] bursts = {29,18,7};
+    //     int[] arrivals = {21,9,13};
     //     srtf test_srtf = new srtf(arrivals, bursts, bursts.length);
 
     //     //System.out.println(test_srtf.getGanttChart());
