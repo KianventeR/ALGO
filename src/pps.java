@@ -141,41 +141,5 @@ public class pps {
     public double getAverageTurnaroundTime() {
         return averageTurnaroundTime;
     }
-
-    public String getGanttChart() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("+");
-        for (int i = 0; i < ganttChart.size(); i++) {
-            sb.append("-");
-        }
-        sb.append("+\n");
-        sb.append("|");
-        for (int i = 0; i < ganttChart.size(); i++) {
-            sb.append(ganttChart.get(i));
-                if(i < ganttChart.size() - 1){
-                    if(ganttChart.get(i).equals(ganttChart.get(i+1))){
-                        sb.append(" ");
-                    }else{
-                        sb.append("|");
-                    }
-                }
-        }
-        sb.append("|\n");
-        sb.append("+");
-        for (int i = 0; i < ganttChart.size(); i++) {
-            sb.append("-");
-        }
-        sb.append("+\n");
-        sb.append("0");
-        for (int i = 0; i < ganttChart.size(); i++) {
-            if (ganttChart.get(i).contains("|")) {
-                sb.append(String.format("%3d", i+1));
-            } else {
-                sb.append("   ");
-            }
-        }
-        sb.append("\n");
-        return sb.toString();
-    }
 }
     

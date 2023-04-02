@@ -41,7 +41,6 @@ public class sjf {
         for (int i = 0; i < numProcesses; i++) {
             this.remainingTimes[i] = burstTime[i];
         }
-        String res = getGanttChart();
         calculate();
     }
     
@@ -132,9 +131,9 @@ public class sjf {
         int[] waitingTime = new int[numProcesses];
         int[] startTime = new int[numProcesses];
 
-        //arrivalTime = pids.stream()
-        //.mapToInt(i -> this.arrivalTime[i])
-        //.toArray();
+        // arrivalTime = pids.stream()
+        // .mapToInt(i -> this.arrivalTime[i])
+        // .toArray();
 
         for (int i = 0; i < numProcesses; i++) {
             turnaroundTime[i] = completionTimes[i] - arrivalTime[i];
@@ -175,50 +174,4 @@ public class sjf {
         averageTurnaroundTime = IntStream.range(0,turnaroundTimes.length).boxed()
             .mapToInt(i -> turnaroundTimes[i]).average().orElse(0.0); 
     }
-
-    // public static void main(String[] args){
-    //     int[] bursts = {1,4,2,3};
-    //     int[] arrivals = {1,3,2,4};
-    //     sjf test_sjf = new sjf(arrivals, bursts, bursts.length);
-    //     //System.out.println(test_sjf.getGanttChart());
-    //     System.out.println("Processes");
-        
-    //     int[] arrs = test_sjf.getProcessIDs();
-    //     for(int i = 0; i < arrs.length; i++){
-    //         System.out.print(arrs[i] + " ");
-    //     }
-    //     System.out.println("\nArrivals");
-    //     arrs = test_sjf.getArrivalTimes();
-    //     for(int i = 0; i < arrs.length; i++){
-    //         System.out.print(arrs[i] + " ");
-    //     }
-    //     System.out.println("\nBurst Times");
-    //     arrs = test_sjf.getBurstTimes();
-    //     for(int i = 0; i < arrs.length; i++){
-    //         System.out.print(arrs[i] + " ");
-    //     }
-    //     System.out.println("\nStart Times");
-    //     arrs = test_sjf.getStartTimes();
-    //     for(int i = 0; i < arrs.length; i++){
-    //         System.out.print(arrs[i] + " ");
-    //     }
-    //     System.out.println("\nCompletion Times");
-    //     arrs = test_sjf.getCompletionTimes();
-    //     for(int i = 0; i < arrs.length; i++){
-    //         System.out.print(arrs[i] + " ");
-    //     }
-    //     System.out.println("\nWaiting Times");
-    //     arrs = test_sjf.getWaitingTimes();
-    //     for(int i = 0; i < arrs.length; i++){
-    //         System.out.print(arrs[i] + " ");
-    //     }
-    //     System.out.println("\nTurnaround Times");
-    //     arrs = test_sjf.getTurnaroundTimes();
-    //     for(int i = 0; i < arrs.length; i++){
-    //         System.out.print(arrs[i] + " ");
-    //     }
-        
-    //     System.out.println("\nAverage Waiting Time: "+test_sjf.getAverageWaitingTime());
-    //     System.out.println("Average Turnaround Time: "+test_sjf.getAverageTurnaroundTime());
-    // }
 }

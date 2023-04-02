@@ -907,12 +907,18 @@ public class Input extends javax.swing.JPanel {
             }catch (Exception e){
                 e.printStackTrace();
             }
-            pid = sjf.getProcessIDs();
-            for(int i=0; i<pid.length; i++) {
-                pid[i] = pid[i]+1;
-            }
-            start = sjf.getStartTimes();
-            end = sjf.getCompletionTimes();
+            // pid = sjf.getProcessIDs();
+            // for(int i=0; i<pid.length; i++) {
+            //     pid[i] = pid[i]+1;
+            // }
+            // start = sjf.getStartTimes();
+            // for(int i=0; i<start.length; i++) {
+            //     System.out.println(start[i]);
+            // }
+            // end = sjf.getCompletionTimes();
+            // for(int i=0; i<end.length; i++) {
+            //     System.out.println(end[i]);
+            // }
         }
         else if(ALGO.select.algo == "sjf-p"){
             int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();
@@ -938,10 +944,6 @@ public class Input extends javax.swing.JPanel {
             }catch (Exception e){
                 e.printStackTrace();
             }
-            // pid = srtf.getProcessIDs();
-            // for(int i=0; i<pid.length; i++) {
-            //     System.out.println(pid[i]);
-            // }
         }
         chart = new DynamicGanttChart(pid, start, end);
         chart.setBounds(110, 400, 1020, 180);

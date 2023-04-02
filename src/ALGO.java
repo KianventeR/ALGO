@@ -14,7 +14,6 @@ public class ALGO extends javax.swing.JFrame {
     public static Results results = new Results();
     public static Loading load = new Loading();
     public static SelectPreempt selectP = new SelectPreempt();
-    
     public static boolean sound = true;
     
     public ALGO() {
@@ -48,7 +47,7 @@ public class ALGO extends javax.swing.JFrame {
             public void run() {
                 card.show(mainPanel, "1");
             }
-        }, 2 * 1000); // Miliseconds
+        }, 2 * 1000);
     }
 
     public static void main(String[] args) {
@@ -60,7 +59,6 @@ public class ALGO extends javax.swing.JFrame {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
                         | UnsupportedLookAndFeelException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 

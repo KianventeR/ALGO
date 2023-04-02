@@ -191,11 +191,11 @@ public class rr {
         return result2;
     }
 
-    public static void main(String[] args){
-        int[] bursts = {2,3,1,2,4};
-        int[] arrivals = {1,3,2,4,5};
-        int time_slice = 1;
-        rr test_rr = new rr(bursts, arrivals, time_slice);
-        System.out.println(test_rr.toString());
-    }
+    // public static void main(String[] args){
+    //     int[] bursts = {2,3,1,2,4};
+    //     int[] arrivals = {1,3,2,4,5};
+    //     int time_slice = 1;
+    //     rr test_rr = new rr(bursts, arrivals, time_slice);
+    //     System.out.println(test_rr.toString());
+    // }
 }
