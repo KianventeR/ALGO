@@ -844,9 +844,6 @@ public class Input extends javax.swing.JPanel {
                 e.printStackTrace();
             }
             pid = npps.getProcessIDs();
-            for(int i=0; i<pid.length; i++) {
-                pid[i] = pid[i]+1;
-            }
             start = npps.getStartTimes();
             end = npps.getEndTimes();
         }
