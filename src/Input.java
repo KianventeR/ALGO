@@ -696,7 +696,7 @@ public class Input extends javax.swing.JPanel {
                 count++;
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Add input to all boxes first.");
+            JOptionPane.showMessageDialog(null, "Add valid input to all boxes first.");
             return;
         }
 
@@ -883,7 +883,7 @@ public class Input extends javax.swing.JPanel {
             start = pps.getStartTimes();
             end = pps.getCompletionTimes();
         }
-        else if(ALGO.select.algo == "sjf-np"){
+        else if(ALGO.select.algo == "sjf-np") {
             int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();
             int[] aarray = arrivalArray.stream().mapToInt(Integer::intValue).toArray();
             try{
@@ -907,18 +907,12 @@ public class Input extends javax.swing.JPanel {
             }catch (Exception e){
                 e.printStackTrace();
             }
-            // pid = sjf.getProcessIDs();
-            // for(int i=0; i<pid.length; i++) {
-            //     pid[i] = pid[i]+1;
-            // }
-            // start = sjf.getStartTimes();
-            // for(int i=0; i<start.length; i++) {
-            //     System.out.println(start[i]);
-            // }
-            // end = sjf.getCompletionTimes();
-            // for(int i=0; i<end.length; i++) {
-            //     System.out.println(end[i]);
-            // }
+            pid = sjf.getProcessIDs();
+            for(int i=0; i<pid.length; i++) {
+                pid[i] = pid[i]+1;
+            }
+            start = sjf.getStartTimes();
+            end = sjf.getCompletionTimes();
         }
         else if(ALGO.select.algo == "sjf-p"){
             int[] barray = burstArray.stream().mapToInt(Integer::intValue).toArray();

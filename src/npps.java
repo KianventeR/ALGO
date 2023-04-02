@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 class Job {
@@ -64,8 +67,9 @@ public class npps {
     private static ArrayList<Job> jobs;
 
     public npps(int[] burst, int[] arrival, int[] priority){
-        jobs = new ArrayList<>();
+        this.jobs = new ArrayList<>();
         addJobs(arrival, burst, priority);
+        
         String res = generateGanttChart();
     }
 
@@ -104,7 +108,6 @@ public class npps {
         for (int i = 0; i < jobs.size(); i++) {
             startTimes[i] = jobs.get(i).getStartTime();
         }
-
         return startTimes;
     }
 
@@ -114,7 +117,6 @@ public class npps {
         for (int i = 0; i < jobs.size(); i++) {
             endTimes[i] = jobs.get(i).getFinishTime();
         }
-
         return endTimes;
     }
 
@@ -124,7 +126,6 @@ public class npps {
         for (int i = 0; i < jobs.size(); i++) {
             waitingTimes[i] = jobs.get(i).getWaitingTime();
         }
-
         return waitingTimes;
     }
 
@@ -134,7 +135,6 @@ public class npps {
         for (int i = 0; i < jobs.size(); i++) {
             turnaroundTimes[i] = jobs.get(i).getTurnaroundTime();
         }
-
         return turnaroundTimes;
     }
 
@@ -144,9 +144,7 @@ public class npps {
         for (int i = 0; i < jobs.size(); i++) {
             priorities[i] = jobs.get(i).getPriority();
         }
-
         return priorities;
-
     }
 
 
@@ -156,16 +154,18 @@ public class npps {
         for(int i = 0; i < nums.length; i++){
             sum += nums[i];
         }
-        return (sum / jobs.size());
+        double result = sum / jobs.size();
+        return result;
     }
 
     public double getAverageTurnaroundTime(){
-        int sum = 0;
+        double sum = 0;
         int[] nums = getTurnaroundTimes();
         for(int i = 0; i < nums.length; i++){
             sum += nums[i];
         }
-        return (sum / jobs.size());
+        double result = sum / jobs.size();
+        return result;
     }
 
 
@@ -199,6 +199,42 @@ public class npps {
             }
         }
         jobs = jobsSaved;
+        jobs = IntStream.range(0, jobs.size()).boxed()
+        .sorted(Comparator.comparingInt(i -> jobs.get(i).getArrivalTime()))
+        .map(i-> jobs.get(i))
+        .collect(Collectors.toCollection(ArrayList::new));
         return chart.toString();
+    }
+
+    public static void main(String[] args) {
+        int[] arrivals = {1,3,2,4,5};
+        int[] bursts = {2,3,1,2,4};
+        int[] priorities = {1,2,3,4,5}; 
+        npps scheduler = new npps(bursts, arrivals, priorities);
+        String ganttChart = scheduler.generateGanttChart();
+        System.out.println(ganttChart);
+        System.out.println(scheduler.isEmpty());
+        for(int num : scheduler.getProcessIDs()){
+            System.out.print(num + " ");
+        }
+        System.out.println();
+        for(int num : scheduler.getStartTimes()){
+            System.out.print(num + " ");
+        }
+        System.out.println();
+        for(int num : scheduler.getEndTimes()){
+            System.out.print(num + " ");
+        }
+        System.out.println();
+        for(int num : scheduler.getWaitingTimes()){
+            System.out.print(num + " ");
+        }
+        System.out.println();
+        for(int num : scheduler.getTurnaroundTimes()){
+            System.out.print(num+ " ");
+        }
+        System.out.println();
+        System.out.println(scheduler.getAverageWaitingTime());
+        System.out.println(scheduler.getAverageTurnaroundTime());
     }
 }

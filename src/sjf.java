@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.stream.IntStream;
 
 public class sjf {
-    private static int[] processIDs;
+    private static int[] processIds;
     private int[] arrivalTime;
     private int[] burstTime;
     private int numProcesses;
@@ -26,28 +26,25 @@ public class sjf {
         this.turnaroundTimes = new int[numProcesses];
         this.waitingTimes = new int[numProcesses];
         this.remainingTimes = new int[numProcesses];
-        completionTimes = new int[numProcesses];
-        startTimes = new int[numProcesses];
+        this.completionTimes = new int[numProcesses];
+        this.startTimes = new int[numProcesses];
         
-        processIDs = IntStream.range(0,arrivalTime.length).boxed()
+        this.processIds = IntStream.range(0,arrivalTime.length).boxed()
         .sorted(Comparator.comparing(i->this.arrivalTime[i]))
         .mapToInt(Integer::intValue)
         .toArray();
 
-        for(int i : processIDs) {
+        for(int i : processIds){
             pids.add(i);
         }
 
         for (int i = 0; i < numProcesses; i++) {
             this.remainingTimes[i] = burstTime[i];
         }
+        String res = getGanttChart();
         calculate();
     }
     
-    public static int[] getProcessIDs() {
-        return processIDs;
-    }
-
     public int[] getArrivalTimes() {
         return arrivalTime;
     }
@@ -70,6 +67,10 @@ public class sjf {
 
     public static int[] getStartTimes() {
         return startTimes;
+    }
+
+    public static int[] getProcessIDs() {
+        return processIds;
     }
 
     public double getAverageTurnaroundTime() {
@@ -131,9 +132,9 @@ public class sjf {
         int[] waitingTime = new int[numProcesses];
         int[] startTime = new int[numProcesses];
 
-        // arrivalTime = pids.stream()
-        // .mapToInt(i -> this.arrivalTime[i])
-        // .toArray();
+        //arrivalTime = pids.stream()
+        //.mapToInt(i -> this.arrivalTime[i])
+        //.toArray();
 
         for (int i = 0; i < numProcesses; i++) {
             turnaroundTime[i] = completionTimes[i] - arrivalTime[i];
@@ -142,7 +143,7 @@ public class sjf {
         }
         this.turnaroundTimes = turnaroundTime;
         this.waitingTimes = waitingTime;
-        startTimes = startTime;
+        this.startTimes = startTime;
         
         startTimes = IntStream.range(0,completionTimes.length).boxed()
         .sorted(Comparator.comparing(i->arrivalTime[i]))
