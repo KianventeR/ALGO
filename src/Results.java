@@ -253,6 +253,7 @@ public class Results extends javax.swing.JPanel {
         Music.sfx();
         ALGO.select.resetAudioButton(); 
         ALGO.input.setInputs();
+        ALGO.input.quantum = 0;
         ALGO.card.show(ALGO.mainPanel, "5");
         DefaultTableModel model = (DefaultTableModel) results_table.getModel();
         model.setRowCount(0);
@@ -271,6 +272,7 @@ public class Results extends javax.swing.JPanel {
         Music.sfx();
         ALGO.menu.resetAudioButton();
         ALGO.input.setInputs();
+        ALGO.input.quantum = 0;
         reset();
         ALGO.card.show(ALGO.mainPanel, "1");
         DefaultTableModel model = (DefaultTableModel) results_table.getModel();

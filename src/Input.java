@@ -404,7 +404,7 @@ public class Input extends javax.swing.JPanel {
     }                                        
 
     public void input_returnActionPerformed(java.awt.event.ActionEvent evt) {   
-
+        quantum = 0;
         Music.sfx();
         count = 1;
         ALGO.card.show(ALGO.mainPanel, "1");
@@ -420,6 +420,7 @@ public class Input extends javax.swing.JPanel {
         input_prioIn.setText("");
         input_quantumIn.setText("");
 
+        input_import.setEnabled(true);
         input_burstInFocusLost(null);
         input_arrivalInFocusLost(null);
         input_prioInFocusLost(null);
@@ -557,11 +558,12 @@ public class Input extends javax.swing.JPanel {
     }
 
 
-    public void input_inputActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    public void input_inputActionPerformed(java.awt.event.ActionEvent evt) {                                          
         Music.sfx();
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel)input_table.getModel();
 
-        try {
+        ALGO.input.input_import.setEnabled(false);
+        try {         
             if(count == 21){
                 JOptionPane.showMessageDialog(null, "Twenty (20) Processes Only");
                 return;
@@ -747,7 +749,7 @@ public class Input extends javax.swing.JPanel {
     private void input_simulateMouseExited(java.awt.event.MouseEvent evt) {                                           
         input_simulate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/input/simulate.png")));
     }                                          
-    public void input_simulateActionPerformed(java.awt.event.ActionEvent evt) {    
+    public void input_simulateActionPerformed(java.awt.event.ActionEvent evt) { 
         Music.sfx();
         ALGO.results.setTitle();
         if(pidArray.size() < 3){
@@ -963,6 +965,7 @@ public class Input extends javax.swing.JPanel {
         input_prioIn.setText("");
         input_quantumIn.setText("");
 
+        input_import.setEnabled(true);
         input_burstInFocusLost(null);
         input_arrivalInFocusLost(null);
         input_prioInFocusLost(null);

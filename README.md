@@ -1,22 +1,37 @@
 
-# ALGO (CPU Scheduling Algorithm Simulator)
+# ALGO: A CPU Scheduling Algorithm Simulator
 
-This is a CPU Scheduling Algorithm Simulator program built with Java by 3 3rd-Year Computer Science students.
+This program is CPU Scheduling Algorithm Simulator developed by 3 third-year Computer Science students (FMS STUDIOS) as a group project for CMSC 125. It is also built using Java language and the GUI is constructed using Netbeans IDE.
 ## Acknowledgements
 
- - [Soundtrack](https://www.youtube.com/) by < author >
+ - [Soundtrack Music](https://www.youtube.com/watch?v=O1YAWYfhet8) by [ibrahim](https://www.youtube.com/channel/UCQYAnpT4_KJt0gVM3F90BTw)
 
 
 ## Deployment
 
-< how to open program, exe file >
+1. (Preferably) Install the latest version of Java SDK and Java JRE. 
+2. In your console of choice, change directory to the folder where the `.jar` file or `.exe` file named ALGO is located. 
+3. Run the the program using the commands listed below depending if you use the `.jar` file or the `.exe` file (Windows).
+
+### Jar File Execution
+1. For other OS with Java installed, type the following: `java -jar ALGO.jar`
+
+### Exe File (Windows users only)
+1. Simply type the following: `start ALGO.exe`
 
 ###
-< alternative way of opening the program, jar file >
+You can also run the jar and/or exe files by simply opening either of the files.
 
-###
-< alternative way of opening the program, java file >
 
+## Test Case File Format
+
+1. You can import a `.txt` file to extract inputs for the different CPU Scheduling Algorithms
+2. format should be: `<Process ID>`,`<Burst Time>`,`<Arrival Time>`,`<Priority>`,
+```
+P1,2,3,3,
+P2,1,2,1,
+P3,3,1,2,
+```
 
 ## Authors
 
